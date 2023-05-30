@@ -3,12 +3,12 @@
 2. La app de ionic se levanta de manera local.
 
 ### Dependencias obligatorias
-- Docker desktop
+- (NO USAR TODAVIA) Docker desktop
 - node v18.16.0
 - npm v9.5.1
 - ionic v7.1.1
 
-### Docker: MongoDB y FastApi
+### (NO USAR TODAVIA) Docker: MongoDB y FastApi 
 - Abrir Docker Desktop para poder ejecutar comandos de docker en powershell
 - Si hay algun problema con los comandos, asegurarse de que los puertos 27017 y 8000 esten disponibles antes de proceder
 - En la raiz del proyecto en la terminal de powershell ejecutar `.\script_1_docker_api_bd.ps1`
@@ -20,6 +20,6 @@
     4. `exit` (esto cerrara la shell de mongo)
 
 ### Local: Ionic app
-- ir a carpeta `./SkeletonApp/` y ejecutar comando: `nmp install`
-- ir a carpeta `./SkeletonApp/` y ejecutar comando: `ionic serve`
+- ir a carpeta `./FichaClinica/` y ejecutar comando: `nmp install`
+- ir a carpeta `./FichaClinica/` y ejecutar comando: `ionic serve`
 
