@@ -5,9 +5,39 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col></ion-col>
+      <ion-col sizeLg="4" sizeXs="12">
+<ion-card color="primary" class="ion-text-center">
+          <ion-card-header>
+            <ion-card-title>Ficha Clinica</ion-card-title>
+            <ion-card-subtitle
+              >Cuidamos de tu salud</ion-card-subtitle
+            >
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-list>
+              <ion-list>
+                <ion-item>
+                  <h1>Inicio de sesión</h1>
+                </ion-item>
+                <ion-item>
+                  <ion-input label="Nombre" placeholder="username" ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-input label="Password" type="password" value="no-valid" ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-button color="tertiary" [routerLink]="['/tabs/tabs/tab1']">Login</ion-button>
+                </ion-item>
+              </ion-list>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
