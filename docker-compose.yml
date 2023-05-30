@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mongo:5.0
+    container_name: FichaClinica_bd
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=myPassword123
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_FichaClinica:/data/db
+      - mongodb_config_FichaClinica:/data/configdb
+    networks:
+      - FichaClinica_net
+  api:
+    container_name: FichaClinica_api
+    build: ./api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 80
+    volumes:
+      - ./api:/code/
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    networks:
+      - FichaClinica_net
+networks:
+  FichaClinica_net:
+volumes:
+  mongodb_FichaClinica:
+  mongodb_config_FichaClinica:
