@@ -40,7 +40,8 @@ export class LoginPage implements OnInit {
       header: 'aviso',
       subHeader: '',
       message: this.alertMessage,
-      buttons: ['OK']
+      buttons: ['OK'],
+      cssClass: 'animate__animated animate__heartBeat' // agrega las clases de animate.css para animar la alerta
     });
 
     await alert.present();
