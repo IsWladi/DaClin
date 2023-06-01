@@ -1,16 +1,74 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Mis horas medicas</ion-title>
+    <div class="ion-text-end">
+      <span
+        ><ion-button color="light" [routerLink]="['/']">
+          <ion-icon
+            name="lock-closed-outline"
+            color="primary"
+          ></ion-icon> </ion-button
+      ></span>
+    </div>
+    <ion-title class="ion-text-center">Mis citas medicas</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-grid>
     <ion-row>
-      <ion-col></ion-col>
-      <ion-col sizeLg="4" sizeXs="12">
+      <ion-col size="12">
+        <h1>Nueva cita</h1>
+        <ion-list>
+          <ion-item>
+            <ion-label>Nombre:</ion-label>
+            <ion-input placeholder="hora con dentista"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Fecha cita:</ion-label>
+            <ion-input>
+              <ion-datetime-button slot="end" datetime="datetime">
+              </ion-datetime-button>
+            </ion-input>
+
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime id="datetime">
+                  <span slot="title">Ingresa la fecha de tu hora medica</span>
+                </ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Comentario opcional:</ion-label>
+            <ion-input placeholder="no olvidar examen..."></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-button class="full-width-button" color="tertiary"
+              >Guardar recordatio</ion-button
+            >
+          </ion-item>
+        </ion-list>
       </ion-col>
-      <ion-col></ion-col>
+
+      <ion-col size="12">
+        <h1>Mis citas</h1>
+        <ion-list>
+          <div *ngFor="let cita of citas; let i = index" class="post-it" (click)="toggleExpand(i)">
+            <div [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}">
+              <ion-label>{{ cita.nombre }}</ion-label>
+              <ion-label *ngIf="isExpanded[i]"><b>fecha</b>: {{ cita.fecha }}</ion-label>
+              <ion-label *ngIf="isExpanded[i]"><b>hora</b>: {{ cita.hora }}</ion-label>
+              <ion-label *ngIf="isExpanded[i]"><b>comentario</b>: {{ cita.comentario }}</ion-label>
+            </div>
+          </div>
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
