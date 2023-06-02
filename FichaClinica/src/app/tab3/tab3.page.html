@@ -14,4 +14,64 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <h1 class="ion-text-center">Nuevo tratamiento</h1>
+      </ion-col>
+      <ion-col size="6" class="centrado">
+          <h3>tratamiento</h3>
+          <ion-list>
+            <ion-item>
+              <ion-label>Motivo tratamiento:</ion-label>
+              <ion-input placeholder="ej: dolor lumbar"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Instrucción medico:</ion-label>
+              <ion-textarea placeholder="ej: tomar 1 pastilla de desdol cada 8 horas por 5 dias"></ion-textarea>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Inicio tratamiento:</ion-label>
+              <ion-input>
+                <ion-datetime-button slot="end" datetime="datetime">
+                </ion-datetime-button>
+              </ion-input>
+
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime id="datetime">
+                    <span slot="title">Fecha inicio del tratamiento</span>
+                  </ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </ion-item>
+
+          </ion-list>
+      </ion-col>
+
+
+      <ion-col size="6" class="centrado">
+          <h3>remedio</h3>
+          <ion-list>
+            <ion-item>
+              <ion-label>nombre remedio:</ion-label>
+              <ion-input placeholder="desdol"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Gramos</ion-label>
+              <ion-input placeholder="500g"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Cantidad por caja:</ion-label>
+              <ion-input placeholder="30"></ion-input>
+            </ion-item>
+          </ion-list>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
 </ion-content>
