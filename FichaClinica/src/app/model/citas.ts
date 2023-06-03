@@ -1,6 +1,6 @@
 export interface Cita {
-  nombre: string;
+  motivo: string;
+  especialidad: string;
   fecha: string;
   hora: string;
-  comentario: string;
 }

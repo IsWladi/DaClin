@@ -24,8 +24,13 @@
       <ion-col size="12" class="centrado">
         <ion-list>
           <ion-item>
-            <ion-label>Nombre:</ion-label>
-            <ion-input placeholder="hora con dentista"></ion-input>
+            <ion-label>Motivo:</ion-label>
+            <ion-input placeholder="dolor de muelas"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Especialidad:</ion-label>
+            <ion-input placeholder="Dentista"></ion-input>
           </ion-item>
 
           <ion-item>
@@ -44,10 +49,6 @@
             </ion-modal>
           </ion-item>
 
-          <ion-item>
-            <ion-label>Comentario:</ion-label>
-            <ion-input placeholder="no olvidar examen..."></ion-input>
-          </ion-item>
 
           <ion-item>
             <ion-button class="full-width-button" color="tertiary"
@@ -64,11 +65,11 @@
         <ion-list>
           <div *ngFor="let cita of citas; let i = index" class="post-it centrado" (click)="toggleExpand(i)">
             <div class="ion-text-center" [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}">
-              <h3>{{ cita.nombre }}</h3>
+              <h3>{{ cita.motivo }}</h3>
               <ion-text>
+                <h4 *ngIf="isExpanded[i]"> {{ cita.especialidad }}</h4>
                 <h4 *ngIf="isExpanded[i]"> {{ cita.fecha }}</h4>
                 <h4 *ngIf="isExpanded[i]"> {{ cita.hora }}hrs</h4>
-                <h4 *ngIf="isExpanded[i]"> {{ cita.comentario }}</h4>
               </ion-text>
             </div>
           </div>

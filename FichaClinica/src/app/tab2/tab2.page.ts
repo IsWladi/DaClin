@@ -23,10 +23,12 @@ isExpanded: boolean[] = [];
 
   ionViewDidEnter() {
     this.citas = this.apiService.getCitas();
-    // hacer que this.citas[i].nombre sea la primera letra en mayúscula
+    // hacer que this.citas[i].motivo sea la primera letra en mayúscula
     this.citas.forEach(cita => {
-      cita.nombre = cita.nombre[0].toUpperCase() + cita.nombre.slice(1);
+      cita.motivo = cita.motivo[0].toUpperCase() + cita.motivo.slice(1);
+      cita.especialidad = cita.especialidad[0].toUpperCase() + cita.especialidad.slice(1);
     });
+
   }
 
 
