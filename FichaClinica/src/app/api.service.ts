@@ -4,6 +4,40 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ApiService {
+  getRemedios(): import("./model/remedios").Remedio[] {
+    return [
+            {
+              remedio: "Paracetamol",
+              motivo: "Dolor de cabeza",
+              cantidad: 1,
+              frecuencia_horas: 8,
+              periodo_dias: 1,
+              inicio: "2023-06-03",
+              hora: "09:00",
+              comentario: "Tomar con comida",
+            },
+            {
+              remedio: "Ibuprofeno",
+              motivo: "Dolor muscular",
+              cantidad: 2,
+              frecuencia_horas: 6,
+              periodo_dias: 2,
+              inicio: "2023-06-03",
+              hora: "12:00",
+              comentario: "No exceder la dosis diaria",
+            },
+            {
+              remedio: "Omeprazol",
+              motivo: "Acidez estomacal",
+              cantidad: 1,
+              frecuencia_horas: 24,
+              periodo_dias: 1,
+              inicio: "2023-06-03",
+              hora: "20:00",
+              comentario: "Tomar antes de dormir",
+            },
+]
+  }
   getCitas(): import("./model/citas").Cita[] {
     return [
       {
