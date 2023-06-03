@@ -2,7 +2,7 @@ ion-card{
 background: var(--ion-solid-background);
 border-radius: 1rem;
 
-#lgn-inside{
+#rgs-inside{
   background: var(--ion-inside-background);
   color: #000;
   padding: 1rem;
@@ -11,9 +11,4 @@ border-radius: 1rem;
     padding-top: 0.5rem;
   }
 }
-}
-
-
-ion-button{
-  border-radius: 1rem;
 }

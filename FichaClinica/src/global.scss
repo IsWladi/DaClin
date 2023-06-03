@@ -25,6 +25,13 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+/* background-image: linear-gradient(to right top, #ffffff, #e5e7ff, #c1d1ff, #8fbeff, #34aeff); */
+
+ion-content {
+  // --background: linear-gradient(to right top, #ffffff, #e5e7ff, #c1d1ff, #8fbeff, #34aeff);
+  --background: linear-gradient(to right top, #ffffff, #e5e7ff, #c1d1ff, #8fbeff, #34aeff);
+}
+
 .post-it {
   background-color: #c2e6c2;
   padding: 10px;

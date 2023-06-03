@@ -8,41 +8,32 @@
   <ion-grid>
     <ion-row>
       <ion-col></ion-col>
-      <ion-col sizeLg="4" sizeXs="12">
+      <ion-col  sizeXs="12" sizeMd="8" sizeLg="8">
         <ion-card color="primary" class="ion-text-center">
           <ion-card-header>
-            <ion-card-title>Ficha Clinica</ion-card-title>
+            <ion-card-title>DaClin</ion-card-title>
             <ion-card-subtitle>Te ayudamos a cuidarte</ion-card-subtitle>
           </ion-card-header>
 
           <ion-card-content>
-            <ion-list>
-              <ion-list>
-                <ion-item>
-                  <h1>Inicio de sesión</h1>
-                </ion-item>
-                <ion-item>
-                  <ion-input
-                    label="Nombre"
-                    placeholder="username"
-                    [(ngModel)]="username"
-                  ></ion-input>
-                </ion-item>
-                <ion-item>
-                  <ion-input
-                    label="Password"
-                    type="password"
-                    value="no-valid"
-                    [(ngModel)]="password"
-                  ></ion-input>
-                </ion-item>
-                <ion-item>
-                  <ion-button class="full-width-button" color="tertiary" (click)="login()"
-                    >Login</ion-button
-                  >
-                </ion-item>
-              </ion-list>
-            </ion-list>
+            <div id="lgn-inside" class="ion-justify-content-center">
+              <h1 class="padding-login">Inicio de sesión</h1>
+              <ion-input
+                label="Nombre"
+                placeholder="username"
+                [(ngModel)]="username"
+                ></ion-input>
+              <ion-input
+                label="Password"
+                type="password"
+                placeholder="contraseña"
+                [(ngModel)]="password"
+                ></ion-input>
+              <a class="padding-login" [routerLink]="['/register']">¿No tienes una cuenta?</a>
+              <ion-button class="full-width-button" color="primary" (click)="login()"
+                >Login</ion-button
+              >
+            </div>
           </ion-card-content>
         </ion-card>
       </ion-col>
