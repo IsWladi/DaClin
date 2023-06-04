@@ -106,6 +106,10 @@ export class ApiService {
   getUsers(): import("./model/users").User[] {
     return [
             {
+              "username": "dev",
+              "password": "123",
+            },
+            {
               "username": "Juan",
               "password": "123456",
             },{

@@ -33,11 +33,12 @@ ion-content {
 }
 
 .post-it {
-  background-color: #c2e6c2;
+  background-color: var(--ion-post-it-background);
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
   ion-label {
     font-size: 1.5em;
     display: block;
@@ -54,4 +55,15 @@ ion-content {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+// Responsividad
+.hide-on-xs {
+  display: none;
+}
+
+@media (min-width: 413px) {
+  .hide-on-xs {
+    display: inline;
+  }
 }

@@ -1,38 +1,83 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <div class="ion-text-end">
-      <span
-        ><ion-button color="light" [routerLink]="['/']">
-          <ion-icon
-            name="lock-closed-outline"
-            color="primary"
-          ></ion-icon> </ion-button
-      ></span>
+      <span>
+        <ion-button color="light" [routerLink]="['/']">
+          <ion-icon color="primary" name="arrow-back-circle-outline"></ion-icon>
+        <span class="hide-on-xs">Cerrar sesión</span>
+        </ion-button>
+      </span>
     </div>
-    <ion-title class="ion-text-center">Recordatorios</ion-title>
+    <ion-title class="ion-text-center"><b>Recordatorios</b></ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
   <ion-grid>
     <ion-row>
       <ion-col size="12">
         <ion-text color="primary">
-          <h1 class="ion-text-center"><b>Proximas citas medicas</b></h1>
+          <h1 class="ion-text-center"><b>Citas medicas de esta semana</b></h1>
         </ion-text>
       </ion-col>
       <ion-col size="12" class="centrado">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Dentista</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><b>Fecha:</b> 2023-07-10</p>
+            <p><b>Hora:</b> 10:00</p>
+            <p><b>Motivo:</b> Limpieza preventiva</p>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Cardiólogo</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><b>Fecha:</b> 2023-07-12</p>
+            <p><b>Hora:</b> 15:30</p>
+            <p><b>Motivo:</b> Consulta de seguimiento</p>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
 
       <ion-col size="12">
         <ion-text color="primary">
-          <h1 class="ion-text-center"><b>Proximos remedios</b></h1>
+          <h1 class="ion-text-center"><b>Próximos remedios</b></h1>
         </ion-text>
       </ion-col>
       <ion-col size="12" class="centrado">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Paracetamol</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><b>Motivo:</b> Dolor de cabeza</p>
+            <p><b>Cantidad:</b> 1</p>
+            <p><b>Frecuencia:</b> Cada 8 horas</p>
+            <p><b>Inicio:</b> 2023-06-03</p>
+            <p><b>Hora:</b> 09:00</p>
+            <p><b>Comentario:</b> Tomar con comida</p>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Ibuprofeno</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><b>Motivo:</b> Dolor muscular</p>
+            <p><b>Cantidad:</b> 2</p>
+            <p><b>Frecuencia:</b> Cada 6 horas</p>
+            <p><b>Inicio:</b> 2023-06-03</p>
+            <p><b>Hora:</b> 12:00</p>
+            <p><b>Comentario:</b> No exceder la dosis diaria</p>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

@@ -1,17 +1,88 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <div class="ion-text-end">
-      <span
-        ><ion-button color="light" [routerLink]="['/']">
-          <ion-icon
-            name="lock-closed-outline"
-            color="primary"
-          ></ion-icon> </ion-button
-      ></span>
+      <span>
+        <ion-button color="light" [routerLink]="['/']">
+          <ion-icon color="primary" name="arrow-back-circle-outline"></ion-icon>
+        <span class="hide-on-xs">Cerrar sesión</span>
+        </ion-button>
+      </span>
     </div>
-    <ion-title class="ion-text-center">Mis examenes</ion-title>
+    <ion-title class="ion-text-center">Examenes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-text color="primary">
+          <h1 class="ion-text-center"><b>Nuevo examen</b></h1>
+        </ion-text>
+      </ion-col>
+      <ion-col size="12" class="centrado">
+        <ion-list>
+          <ion-item>
+            <ion-label>Razón examen:</ion-label>
+            <ion-input placeholder="dolor de muelas"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Nombre examen:</ion-label>
+            <ion-input placeholder="panoramica"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Fecha examen:</ion-label>
+            <ion-input>
+              <ion-datetime-button slot="end" datetime="datetime">
+              </ion-datetime-button>
+            </ion-input>
+
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime id="datetime">
+                  <span slot="title">Fecha realización examen</span>
+                </ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-item>
+
+          <ion-item id="examen">
+            <ion-label>Subir examen:</ion-label>
+            <ion-input color="primary" type="file" placeholder="formato pdf o jpg"></ion-input>
+
+          </ion-item>
+
+
+          <ion-item>
+            <ion-button class="full-width-button" color="tertiary"
+              >Guardar examen</ion-button>
+
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <!-- <ion-col size="12">
+        <ion-text color="primary">
+          <h1 class="ion-text-center"><b>Mis citas</b></h1>
+        </ion-text>
+        <ion-list>
+          <div *ngFor="let cita of citas; let i = index" class="post-it centrado" (click)="toggleExpand(i)">
+            <div class="ion-text-center" [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}">
+              <h3>{{ cita.motivo }}</h3>
+              <ion-text>
+                <h4 *ngIf="isExpanded[i]"> {{ cita.especialidad }}</h4>
+                <h4 *ngIf="isExpanded[i]"> {{ cita.fecha }}</h4>
+                <h4 *ngIf="isExpanded[i]"> {{ cita.hora }}hrs</h4>
+              </ion-text>
+            </div>
+          </div>
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-col> -->
+    </ion-row>
+  </ion-grid>
 </ion-content>
