@@ -9,15 +9,11 @@
     <ion-row>
       <ion-col></ion-col>
       <ion-col  sizeXs="12" sizeMd="8" sizeLg="8">
-        <ion-card color="primary" class="ion-text-center">
-          <ion-card-header>
-            <ion-card-title>DaClin</ion-card-title>
-            <ion-card-subtitle>Te ayudamos a cuidarte</ion-card-subtitle>
-          </ion-card-header>
 
-          <ion-card-content>
-            <div id="rgs-inside" class="ion-justify-content-center">
+            <div id="lgn-div" class="ion-justify-content-center">
+              <div class="ion-text-center" id="titulo">
                 <h1>Registrarse</h1>
+              </div>
                 <ion-input
                   label="Nombre de usuario:"
                   placeholder="username"
@@ -36,15 +32,13 @@
                   placeholder="contraseña"
                   [(ngModel)]="password2"
                   ></ion-input>
-                <div class="ion-justify-content-center">
+                <div id="margin-lgn" class="ion-text-center">
                   <a class="padding-login" [routerLink]="['/']">¿Ya tienes una cuenta?</a>
                 </div>
                 <ion-button class="full-width-button" color="primary" (click)="register()"
                   >Registrarse</ion-button
                 >
             </div>
-          </ion-card-content>
-        </ion-card>
       </ion-col>
       <ion-col></ion-col>
     </ion-row>
