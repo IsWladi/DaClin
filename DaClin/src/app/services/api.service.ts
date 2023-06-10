@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ApiService {
-  getRemedios(): import("./model/remedios").Remedio[] {
+  getRemedios(): import("../model/remedios").Remedio[] {
     return [
             {
               remedio: "Paracetamol",
@@ -38,7 +38,7 @@ export class ApiService {
             },
 ]
   }
-  getCitas(): import("./model/citas").Cita[] {
+  getCitas(): import("../model/citas").Cita[] {
     return [
       {
         "especialidad": "dentista",
@@ -103,7 +103,7 @@ export class ApiService {
     ]
 
   }
-  getUsers(): import("./model/users").User[] {
+  getUsers(): import("../model/users").User[] {
     return [
             {
               "username": "dev",

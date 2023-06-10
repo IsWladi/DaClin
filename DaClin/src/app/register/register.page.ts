@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../api.service';
+import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import { User } from '../model/users';
 import { AlertController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-register',
+  templateUrl: './register.page.html',
+  styleUrls: ['./register.page.scss'],
 })
-export class LoginPage implements OnInit {
-  usuarios: User[] = [];
+export class RegisterPage implements OnInit {
+  usuarios: User[] = []; // Variable para almacenar los usuarios registrados para comprobar si existe el usuario
   username: string = '';
   password: string = '';
+  password2: string = '';
   alertMessage: string = '';
   public alertButtons = ['OK'];
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
@@ -24,12 +25,13 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     this.usuarios = this.apiService.getUsers();
   }
-  async login() {
-    let user = this.usuarios.find(user => user.username == this.username && user.password == this.password);
-    if (user) {
+  async register() {
+    let userIsRegistered = !!this.usuarios.find(user => user.username == this.username);
+    console.log(userIsRegistered);
+    if (userIsRegistered == false) {
       this.router.navigate(['/tabs/tabs/tab1']);
     } else {
-      this.alertMessage = 'Usuario o contraseña incorrecta';
+      this.alertMessage = 'Nombre de usuario ya registrado';
       this.showAlert = true; // Actualiza la variable para mostrar la alerta
       this.presentAlert(); // Llama al método para mostrar la alerta
     }
