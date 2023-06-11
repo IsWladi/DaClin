@@ -10,7 +10,7 @@ from decouple import config
 app = FastAPI()
 
 # obtener variables de entorno de ../.env
-IP_HOST = config('IPV4', default='127.0.0.1')
+IP_HOST = config('IPV4', default='localhost')
 print(IP_HOST)
 
 # Configurar los orígenes permitidos en los encabezados CORS
@@ -31,16 +31,18 @@ app.add_middleware(
 username = "admin"
 password = "myPassword123"
 # Crear una instancia del cliente de MongoDB
-mongo_client = MongoClient("mongodb://FichaClinica_bd:27017/",
+mongo_client = MongoClient("mongodb://DaClin_bd:27017/",
                            username=username,
                            password=password)
 
 # Obtener una referencia a la base de datos
-mongo_db = mongo_client["FichaClinica"]
+mongo_db = mongo_client["DaClin"]
 usuarios_collection = mongo_db["usuarios"]
 
 # retorna el id del usuario si es valido el login y false si no lo es
-
+@app.get("/api/users/")
+async def get_users():
+    return json.loads(dumps(usuarios_collection.find()))
 
 @app.get("/")
 async def root():
