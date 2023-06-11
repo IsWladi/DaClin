@@ -10,7 +10,7 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  usuarios: User[] = []; // Variable para almacenar los usuarios registrados para comprobar si existe el usuario
+  usuarios: any = []; // Variable para almacenar los usuarios registrados para comprobar si existe el usuario
   username: string = '';
   password: string = '';
   password2: string = '';
@@ -26,14 +26,20 @@ export class RegisterPage implements OnInit {
     this.usuarios = this.apiService.getUsers();
   }
   async register() {
-    let userIsRegistered = !!this.usuarios.find(user => user.username == this.username);
-    console.log(userIsRegistered);
-    if (userIsRegistered == false) {
-      this.router.navigate(['/tabs/tabs/tab1']);
-    } else {
-      this.alertMessage = 'Nombre de usuario ya registrado';
-      this.showAlert = true; // Actualiza la variable para mostrar la alerta
-      this.presentAlert(); // Llama al método para mostrar la alerta
+    try {
+      const success = await this.apiService.registrarUsuario(this.username, this.password);
+      if (success) {
+        this.router.navigate(['/tabs/tabs/tab1']);
+      } else {
+        this.alertMessage = 'Nombre de usuario ya registrado';
+        this.showAlert = true;
+        this.presentAlert();
+      }
+    } catch (error) {
+      console.error('Error al registrar usuario:', error);
+      this.alertMessage = 'Error al registrar usuario';
+      this.showAlert = true;
+      this.presentAlert();
     }
   }
 

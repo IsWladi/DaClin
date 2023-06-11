@@ -2,4 +2,5 @@ fastapi
 uvicorn
 pymongo
 python-decouple
+bcrypt
 

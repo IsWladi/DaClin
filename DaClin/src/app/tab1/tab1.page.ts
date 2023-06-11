@@ -10,13 +10,6 @@ export class Tab1Page {
   recordatodios: any = [];
   usuarios: any = [];
 
-  constructor(private api:ApiService) {}
-
-  ionViewDidEnter() {
-    console.log("prueba de consumo de api:");
-    this.usuarios = this.api.getUsuarios().subscribe((data) => {
-      console.log("data: ", data);
-    });
-  }
+  constructor() {}
 
 }

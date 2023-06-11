@@ -6,6 +6,15 @@ from bson.json_util import dumps
 from fastapi.middleware.cors import CORSMiddleware
 import json
 from decouple import config
+import bcrypt
+
+# para definir el modelo de datos(body de la peticion)
+from pydantic import BaseModel
+
+class UserRegistration(BaseModel):
+    username: str
+    password: str
+
 
 app = FastAPI()
 
@@ -39,10 +48,41 @@ mongo_client = MongoClient("mongodb://DaClin_bd:27017/",
 mongo_db = mongo_client["DaClin"]
 usuarios_collection = mongo_db["usuarios"]
 
+
 # retorna el id del usuario si es valido el login y false si no lo es
+
+
 @app.get("/api/users/")
 async def get_users():
     return json.loads(dumps(usuarios_collection.find()))
+
+# post para crear un usuario
+
+@app.post("/api/users/register/")
+async def create_user(user: UserRegistration):
+    if usuarios_collection.find_one({"username": user.username}):
+        return False
+    # Encriptar la contraseña
+    hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
+
+    usuarios_collection.insert_one(
+        {"username": user.username, "password": hashed_password.decode('utf-8'), "remedios": {}, "citas": {}, "examenes": {}})
+
+    usuario_check = usuarios_collection.find_one({"username": user.username})
+    if usuario_check:
+        return str(usuario_check["_id"])
+    else:
+        return False
+
+# get para logearse
+@app.post("/api/users/login/")
+async def login_user(user: UserRegistration):
+    usuario = usuarios_collection.find_one({"username": user.username})
+    if usuario and bcrypt.checkpw(user.password.encode('utf-8'), usuario['password'].encode('utf-8')):
+        return str(usuario["_id"])
+    else:
+        return False
+
 
 @app.get("/")
 async def root():

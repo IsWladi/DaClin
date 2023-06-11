@@ -10,7 +10,6 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  usuarios: User[] = [];
   username: string = '';
   password: string = '';
   alertMessage: string = '';
@@ -22,10 +21,10 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.usuarios = this.apiService.getUsers();
   }
-  async login() {
-    let user = this.usuarios.find(user => user.username == this.username && user.password == this.password);
+async login() {
+  try {
+    const user = await this.apiService.loginUsuario(this.username, this.password);
     if (user) {
       this.router.navigate(['/tabs/tabs/tab1']);
     } else {
@@ -33,7 +32,13 @@ export class LoginPage implements OnInit {
       this.showAlert = true; // Actualiza la variable para mostrar la alerta
       this.presentAlert(); // Llama al método para mostrar la alerta
     }
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    this.alertMessage = 'Error al iniciar sesión';
+    this.showAlert = true; // Actualiza la variable para mostrar la alerta
+    this.presentAlert(); // Llama al método para mostrar la alerta
   }
+}
 
   async presentAlert() {
     const alert = await this.alertController.create({

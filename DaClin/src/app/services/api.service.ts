@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {HttpHeaders} from "@angular/common/http";
 import {map} from "rxjs/operators";
 
 @Injectable({
@@ -8,20 +9,41 @@ import {map} from "rxjs/operators";
 export class ApiService {
 
   constructor(private http: HttpClient) { }
-  // probar usar HttpClient para obtener datos de un JSON
-  // getRecordatorios() {
-  //   return this.http.get('assets/files/recordatorios.json').pipe(map((res: any) => {
-  //       return res.data;
-  //   }))
-  // }
-  // probar usar HttpClient para obtener datos de una API simple
-  getUsuarios() {
-    return this.http.get('http://localhost:8000/api/users').pipe(
-      map((res: any) => {
-        return res; // Retorna la respuesta JSON completa
-      })
-    );
+
+  // registrar usuario
+  async registrarUsuario(usuario: string, contrasena: string) {
+    const url = 'http://localhost:8000/api/users/register/';
+
+    const body = {
+      username: usuario,
+      password: contrasena
+    };
+
+    try {
+      const response = await this.http.post(url, body).toPromise();
+      return response;
+    } catch (error) {
+      console.error('Error al registrar usuario:', error);
+      throw error; // Lanza una excepción para manejar el error en la función `register()`
+    }
   }
+// login usuario
+async loginUsuario(usuario: string, contrasena: string) {
+  const url = 'http://localhost:8000/api/users/login/';
+
+  const body = {
+    username: usuario,
+    password: contrasena
+  };
+
+  try {
+    const response = await this.http.post(url, body).toPromise();
+    return response; // Devuelve la respuesta obtenida desde el backend
+  } catch (error) {
+    console.error('Error al loguear usuario:', error);
+    throw error; // Relanza el error para manejarlo en la función `login()`
+  }
+}
 
   getRemedios(): import("../model/remedios").Remedio[] {
     return [
@@ -122,31 +144,11 @@ export class ApiService {
     ]
 
   }
-  getUsers(): import("../model/users").User[] {
-    return [
-            {
-              "username": "dev",
-              "password": "123",
-            },
-            {
-              "username": "Juan",
-              "password": "123456",
-            },{
-              "username": "Luis",
-              "password": "hola123",
-            },{
-              "username": "Juano",
-              "password": "hola"
-            },{
-              "username": "admin",
-              "password": "duoc123456",
-            },{
-              "username": "Luisa",
-              "password": "hola1234"
-            },{
-              "username": "Juanito",
-              "password": "salalala"
-            }
-    ]
+  getUsers(){
+    return this.http.get('http://localhost:8000/api/users').pipe(
+      map((res: any) => {
+        return res; // Retorna la respuesta JSON completa
+      })
+    );
   }
 }
