@@ -3,4 +3,5 @@ uvicorn
 pymongo
 python-decouple
 bcrypt
+pydantic
 

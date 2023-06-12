@@ -19,12 +19,12 @@ class UserRegistration(BaseModel):
 app = FastAPI()
 
 # obtener variables de entorno de ../.env
-IP_HOST = config('IPV4', default='localhost')
-print(IP_HOST)
+IP_HOST = config('LAN_INALAMBRICA_WIFI_IPV4', default='localhost')
 
 # Configurar los orígenes permitidos en los encabezados CORS
 origins = [
     f"http://{IP_HOST}:8100",  # Reemplaza con la URL de tu aplicación Angular
+    f"http://{IP_HOST}:8200"
 ]
 
 # Agregar el middleware CORS a la aplicación
@@ -47,14 +47,6 @@ mongo_client = MongoClient("mongodb://DaClin_bd:27017/",
 # Obtener una referencia a la base de datos
 mongo_db = mongo_client["DaClin"]
 usuarios_collection = mongo_db["usuarios"]
-
-
-# retorna el id del usuario si es valido el login y false si no lo es
-
-
-@app.get("/api/users/")
-async def get_users():
-    return json.loads(dumps(usuarios_collection.find()))
 
 # post para crear un usuario
 
