@@ -14,12 +14,14 @@
   - ionic v6.16.3
 
 ### Pasos previos(para que la app desde el telefono se pueda conectar a la api)
-- Tener el pc(si esta con ethernet desconectar el cable y conectar mediante wifi) y el telefono a la misma wifi.
-- En la carpeta `api/app/` crear un archivo `.env` con la variable `LAN_INALAMBRICA_WIFI_IPV4=172.xx.xx.x`
+- Tener el pc(si esta con ethernet desconectar el cable y conectar mediante wifi) y el telefono conectados a la misma wifi.
+- En la carpeta `/api/app/` crear un archivo `.env` con la variable `LAN_INALAMBRICA_WIFI_IPV4=xxx.xx.xx.x`
     - como obtener la ip en windows; en la terminal poner el comando: `ipconfig`
+    ![image](https://github.com/IsWladi/DaClin/assets/133131317/5dcec42e-2f84-4e51-bb7d-92feadec0e4e)
 
 
-### Docker: MongoDB y FastApi
+
+### Docker:
 - Abrir Docker Desktop para poder ejecutar comandos de docker en powershell
 - Si hay algun problema con los comandos, asegurarse de que los puertos 27017 y 8000 esten disponibles antes de proceder
 - En la raiz del proyecto en la terminal de powershell ejecutar `.\script_1_docker_api_bd.ps1`
@@ -33,6 +35,6 @@
 ### Sin Docker:
 
 ### Ionic app
-- ir a carpeta `./FichaClinica/` y ejecutar comando: `npm install`
-- ir a carpeta `./FichaClinica/` y ejecutar comando: `ionic serve --host=0.0.0.0`
+- ir a carpeta `./DaClin/` y ejecutar comando: `npm install`
+- ir a carpeta `./DaClin/` y ejecutar comando: `ionic serve --host=0.0.0.0`
 
