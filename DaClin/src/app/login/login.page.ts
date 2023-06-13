@@ -3,6 +3,12 @@ import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import { User } from '../model/users';
 import { AlertController } from '@ionic/angular';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -10,21 +16,29 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  username: string = '';
-  password: string = '';
   alertMessage: string = '';
   public alertButtons = ['OK'];
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
 
-  constructor(private apiService: ApiService, private router: Router, private alertController: AlertController) {
+  // formulario
+  formularioLogin: FormGroup;
+  usernameRegex = "[a-zA-Z1-9]+";
 
+  constructor(private apiService: ApiService, private router: Router, private alertController: AlertController,public fb: FormBuilder) {
+    this.formularioLogin = this.fb.group({
+      'nombre': new FormControl("",[ Validators.required, Validators.pattern(this.usernameRegex)]),
+      'password': new FormControl("", Validators.required)
+    })
   }
 
   ngOnInit() {
   }
 async login() {
   try {
-    const user = await this.apiService.loginUsuario(this.username, this.password);
+    let username = this.formularioLogin.get('nombre')?.value;
+    let password = this.formularioLogin.get('password')?.value;
+
+    const user = await this.apiService.loginUsuario(username, password);
     if (user) {
       this.router.navigate(['/tabs/tabs/tab1']);
     } else {
