@@ -3,6 +3,12 @@ import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import { User } from '../model/users';
 import { AlertController } from '@ionic/angular';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -11,15 +17,51 @@ import { AlertController } from '@ionic/angular';
 })
 export class RegisterPage implements OnInit {
   usuarios: any = []; // Variable para almacenar los usuarios registrados para comprobar si existe el usuario
-  username: string = '';
-  password: string = '';
-  password2: string = '';
   alertMessage: string = '';
   public alertButtons = ['OK'];
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
+  // formulario
+  formularioRegister: FormGroup;
+  usernameRegex = "[a-zA-Z1-9]{3,}";
+  passwordRegex = "[a-zA-Z1-9]{6,}";
 
-  constructor(private apiService: ApiService, private router: Router, private alertController: AlertController) {
+  constructor(public fb: FormBuilder, private apiService: ApiService, private router: Router, private alertController: AlertController) {
+    this.formularioRegister = this.fb.group({
+      'nombre': new FormControl("",[ Validators.required, Validators.pattern(this.usernameRegex)]),
+      'password': new FormControl("", [Validators.required, Validators.pattern(this.passwordRegex)]),
+      'password2': new FormControl("", [Validators.required, Validators.pattern(this.passwordRegex)])
+    })
 
+  }
+  errorNombre(){
+    let username = this.formularioRegister.get('nombre');
+    if(username?.invalid && username?.touched){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  errorPass1(){
+    let username = this.formularioRegister.get('password');
+    if(username?.invalid && username?.touched){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  errorPass2(){
+    let pass1 = this.formularioRegister.get('password')?.value;
+    let pass2 = this.formularioRegister.get('password2')?.value;
+    if(pass1 != pass2){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   ngOnInit() {
@@ -27,8 +69,20 @@ export class RegisterPage implements OnInit {
   }
   async register() {
     try {
-      const success = await this.apiService.registrarUsuario(this.username, this.password);
-      if (success) {
+      let username = this.formularioRegister.get('nombre')?.value;
+      let password = this.formularioRegister.get('password')?.value;
+      let password2 = this.formularioRegister.get('password2')?.value;
+      let result:any = "";
+      // registrar al usuario si las contraseñas son iguales
+      if(password==password2){
+       result = await this.apiService.registrarUsuario(username, password);
+      }
+      else{
+        this.alertMessage = 'Las contraseñas deben ser identicas';
+        this.showAlert = true;
+        this.presentAlert();
+      }
+      if (result) {
         this.router.navigate(['/tabs/tabs/tab1']);
       } else {
         this.alertMessage = 'Nombre de usuario ya registrado';

@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-title class="ion-text-center">register</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,37 +8,46 @@
   <ion-grid>
     <ion-row>
       <ion-col></ion-col>
-      <ion-col  sizeXs="12" sizeMd="8" sizeLg="8">
-
-            <div id="lgn-div" class="ion-justify-content-center">
-              <div class="ion-text-center" id="titulo">
-                <h1>Registrarse</h1>
+      <ion-col sizeXs="12" sizeMd="8" sizeLg="8">
+        <div id="lgn-div" class="ion-justify-content-center">
+          <div class="ion-text-center" id="titulo">
+            <h1>Registrarse</h1>
+          </div>
+          <form [formGroup]="formularioRegister">
+            <ion-item>
+              <ion-label position="floating">Nombre</ion-label>
+              <ion-input formControlName="nombre"></ion-input>
+              <div *ngIf="errorNombre()" class="input-error">
+                Nombre requerido, minimo 3 caracteres
               </div>
-                <ion-input
-                  label="Nombre de usuario:"
-                  placeholder="username"
-                  [(ngModel)]="username"
-                  ></ion-input>
-                <ion-input
-                  label="Contraseña:"
-                  type="password"
-                  placeholder="contraseña"
-                  [(ngModel)]="password"
-                  ></ion-input>
-
-                <ion-input
-                  label="Repetir contraseña:"
-                  type="password"
-                  placeholder="contraseña"
-                  [(ngModel)]="password2"
-                  ></ion-input>
-                <div id="margin-lgn" class="ion-text-center">
-                  <a class="padding-login" [routerLink]="['/']">¿Ya tienes una cuenta?</a>
-                </div>
-                <ion-button class="full-width-button" color="primary" (click)="register()"
-                  >Registrarse</ion-button
-                >
-            </div>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Contraseña</ion-label>
+              <ion-input formControlName="password" type="password"></ion-input>
+              <div *ngIf="errorPass1()" class="input-error">
+                Contraseña requerida, minimos 6 caracteres
+              </div>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Repetir contraseña</ion-label>
+              <ion-input formControlName="password2" type="password"></ion-input>
+              <div *ngIf="errorPass2()" class="input-error">
+                Las contraseñas deben ser iguales
+              </div>
+            </ion-item>
+          </form>
+          <div id="margin-lgn" class="ion-text-center">
+            <a class="padding-login" [routerLink]="['/']"
+              >¿Ya tienes una cuenta?</a
+            >
+          </div>
+          <ion-button
+            class="full-width-button"
+            color="primary"
+            (click)="register()"
+            >Registrarse</ion-button
+          >
+        </div>
       </ion-col>
       <ion-col></ion-col>
     </ion-row>

@@ -57,6 +57,12 @@ ion-content {
   justify-content: center;
 }
 
+.input-error {
+  margin-top: 5px;
+  font-size: 12px;
+  color: red;
+}
+
 // Responsividad
 .hide-on-xs {
   display: none;
