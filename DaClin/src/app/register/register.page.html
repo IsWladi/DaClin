@@ -18,7 +18,7 @@
               <ion-label position="floating">Nombre</ion-label>
               <ion-input formControlName="nombre"></ion-input>
               <div *ngIf="errorNombre()" class="input-error">
-                Nombre requerido, minimo 3 caracteres
+                Nombre requerido, minimo 3 caracteres, solo alfanumericos.
               </div>
             </ion-item>
             <ion-item>
@@ -30,7 +30,10 @@
             </ion-item>
             <ion-item>
               <ion-label position="floating">Repetir contraseña</ion-label>
-              <ion-input formControlName="password2" type="password"></ion-input>
+              <ion-input
+                formControlName="password2"
+                type="password"
+              ></ion-input>
               <div *ngIf="errorPass2()" class="input-error">
                 Las contraseñas deben ser iguales
               </div>
@@ -45,8 +48,20 @@
             class="full-width-button"
             color="primary"
             (click)="register()"
-            >Registrarse</ion-button
+            *ngIf="isValidForm(); else registerButton"
           >
+            Registrarse
+          </ion-button>
+          <ng-template #registerButton>
+            <ion-button
+              class="full-width-button"
+              color="primary"
+              [disabled]="true"
+              (click)="register()"
+            >
+              Registrarse
+            </ion-button>
+          </ng-template>
         </div>
       </ion-col>
       <ion-col></ion-col>

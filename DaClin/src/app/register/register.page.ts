@@ -7,7 +7,7 @@ import {
   FormGroup,
   FormControl,
   Validators,
-  FormBuilder
+  FormBuilder,
 } from '@angular/forms';
 
 @Component({
@@ -22,44 +22,63 @@ export class RegisterPage implements OnInit {
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
   // formulario
   formularioRegister: FormGroup;
-  usernameRegex = "[a-zA-Z1-9]{3,}";
-  passwordRegex = "[a-zA-Z1-9]{6,}";
+  usernameRegex = '[a-zA-Z1-9]{3,}';
+  passwordRegex = '[a-zA-Z1-9\\W_]{6,}';
 
-  constructor(public fb: FormBuilder, private apiService: ApiService, private router: Router, private alertController: AlertController) {
+  constructor(
+    public fb: FormBuilder,
+    private apiService: ApiService,
+    private router: Router,
+    private alertController: AlertController
+  ) {
     this.formularioRegister = this.fb.group({
-      'nombre': new FormControl("",[ Validators.required, Validators.pattern(this.usernameRegex)]),
-      'password': new FormControl("", [Validators.required, Validators.pattern(this.passwordRegex)]),
-      'password2': new FormControl("", [Validators.required, Validators.pattern(this.passwordRegex)])
-    })
-
+      nombre: new FormControl('', [
+        Validators.required,
+        Validators.pattern(this.usernameRegex),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.pattern(this.passwordRegex),
+      ]),
+      password2: new FormControl('', [
+        Validators.required,
+        Validators.pattern(this.passwordRegex),
+      ]),
+    });
   }
-  errorNombre(){
+
+  isValidForm() {
+    let isValid = this.formularioRegister.valid;
+    if (isValid) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  errorNombre() {
     let username = this.formularioRegister.get('nombre');
-    if(username?.invalid && username?.touched){
+    if (username?.invalid && username?.touched) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
 
-  errorPass1(){
-    let username = this.formularioRegister.get('password');
-    if(username?.invalid && username?.touched){
+  errorPass1() {
+    let pass = this.formularioRegister.get('password');
+    if (pass?.invalid && pass?.touched) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
 
-  errorPass2(){
+  errorPass2() {
     let pass1 = this.formularioRegister.get('password')?.value;
     let pass2 = this.formularioRegister.get('password2')?.value;
-    if(pass1 != pass2){
+    if (pass1 != pass2) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
@@ -72,12 +91,11 @@ export class RegisterPage implements OnInit {
       let username = this.formularioRegister.get('nombre')?.value;
       let password = this.formularioRegister.get('password')?.value;
       let password2 = this.formularioRegister.get('password2')?.value;
-      let result:any = "";
+      let result: any = '';
       // registrar al usuario si las contraseñas son iguales
-      if(password==password2){
-       result = await this.apiService.registrarUsuario(username, password);
-      }
-      else{
+      if (password == password2) {
+        result = await this.apiService.registrarUsuario(username, password);
+      } else {
         this.alertMessage = 'Las contraseñas deben ser identicas';
         this.showAlert = true;
         this.presentAlert();
@@ -103,10 +121,9 @@ export class RegisterPage implements OnInit {
       subHeader: '',
       message: this.alertMessage,
       buttons: ['OK'],
-      cssClass: 'animate__animated animate__heartBeat' // agrega las clases de animate.css para animar la alerta
+      cssClass: 'animate__animated animate__heartBeat', // agrega las clases de animate.css para animar la alerta
     });
 
     await alert.present();
   }
-
 }

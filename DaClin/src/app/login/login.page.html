@@ -15,10 +15,16 @@
             <ion-item>
               <ion-label position="floating">Nombre</ion-label>
               <ion-input formControlName="nombre"></ion-input>
+              <div *ngIf="errorNombre()" class="input-error">
+                Nombre requerido, minimo 3 caracteres, solo alfanumericos.
+              </div>
             </ion-item>
             <ion-item>
               <ion-label position="floating">Contraseña</ion-label>
               <ion-input formControlName="password" type="password"></ion-input>
+              <div *ngIf="errorPass()" class="input-error">
+                Contraseña obligatoria
+              </div>
             </ion-item>
           </form>
           <div id="margin-reg" class="ion-text-center">
@@ -28,8 +34,19 @@
             class="full-width-button"
             color="primary"
             (click)="login()"
+            *ngIf="isValidForm(); else loginButton"
             >Login</ion-button
           >
+          <ng-template #loginButton>
+            <ion-button
+              class="full-width-button"
+              color="primary"
+              [disabled]="true"
+              (click)="login()"
+            >
+              Login
+            </ion-button>
+          </ng-template>
         </div>
       </ion-col>
       <ion-col></ion-col>
