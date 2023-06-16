@@ -2,7 +2,7 @@
   <ion-toolbar>
     <div class="ion-text-end">
       <span>
-        <ion-button color="light" [routerLink]="['/']">
+        <ion-button color="light" (click)="apiService.closeSesion()">
           <ion-icon color="primary" name="arrow-back-circle-outline"></ion-icon>
         <span class="hide-on-xs">Cerrar sesión</span>
         </ion-button>
@@ -21,40 +21,42 @@
         </ion-text>
       </ion-col>
       <ion-col size="12" class="centrado">
-        <ion-list>
-          <ion-item>
-            <ion-label>Motivo:</ion-label>
-            <ion-input placeholder="dolor de muelas"></ion-input>
-          </ion-item>
+        <form [formGroup]="formularioCita">
+          <ion-list>
+            <ion-item>
+              <ion-label>Motivo:</ion-label>
+              <ion-input formControlName="motivo" placeholder="dolor de muelas"></ion-input>
+            </ion-item>
 
-          <ion-item>
-            <ion-label>Especialidad:</ion-label>
-            <ion-input placeholder="Dentista"></ion-input>
-          </ion-item>
+            <ion-item>
+              <ion-label>Especialidad:</ion-label>
+              <ion-input formControlName="especialidad" placeholder="Dentista"></ion-input>
+            </ion-item>
 
-          <ion-item>
-            <ion-label>Fecha cita:</ion-label>
-            <ion-input>
-              <ion-datetime-button slot="end" datetime="datetime">
-              </ion-datetime-button>
-            </ion-input>
+            <ion-item>
+              <ion-label>Fecha cita:</ion-label>
+              <ion-input formControlName="fecha">
+                <ion-datetime-button slot="end" datetime="datetime">
+                </ion-datetime-button>
+              </ion-input>
 
-            <ion-modal [keepContentsMounted]="true">
-              <ng-template>
-                <ion-datetime id="datetime">
-                  <span slot="title">Ingresa la fecha de tu hora medica</span>
-                </ion-datetime>
-              </ng-template>
-            </ion-modal>
-          </ion-item>
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime id="datetime">
+                    <span slot="title">Ingresa la fecha de tu hora medica</span>
+                  </ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </ion-item>
 
 
-          <ion-item>
-            <ion-button class="full-width-button" color="tertiary"
-              >Guardar recordatio</ion-button
-            >
-          </ion-item>
-        </ion-list>
+            <ion-item>
+              <ion-button class="full-width-button" color="tertiary" (click)="guardarCita()"
+                >Guardar cita</ion-button
+              >
+            </ion-item>
+          </ion-list>
+        </form>
       </ion-col>
 
       <ion-col size="12">

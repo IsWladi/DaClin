@@ -73,7 +73,7 @@ async def create_user(user: UserRegistration):
     hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
 
     usuarios_collection.insert_one(
-        {"username": user.username, "password": hashed_password.decode('utf-8'), "remedios": {}, "citas": {}, "examenes": {}})
+        {"username": user.username, "password": hashed_password.decode('utf-8'), "remedios": [], "citas": [] , "examenes": []})
 
     usuario_check = usuarios_collection.find_one({"username": user.username})
     if usuario_check:
@@ -93,20 +93,22 @@ async def login_user(user: UserRegistration):
 # endpoints para tabs 1 2 3 4
 
 # crear nueva cita
-@app.post("/api/citas/agregar/{username}")
-async def agregar_cita(cita: Cita, username: str):
-    usuario = usuarios_collection.find_one({"username": username})
+@app.post("/api/citas/agregar/{user_id}")
+async def agregar_cita(cita: Cita, user_id: str):
+    usuario = usuarios_collection.find_one({"_id": ObjectId(user_id)})
     if usuario:
-        citas = usuario.get("citas", {})  # Obtenemos la lista de citas existentes o una lista vacía
-        if cita.motivo in citas:
-            return {"message": "motivo ya existente"}
-        else:
-            citas[f"{cita.motivo}"] = {"especialidad":cita.especialidad, "fecha":cita.fecha}
-            usuarios_collection.update_one(
-                {"username": username},
-                {"$set": {"citas": citas}}  # Actualizamos el campo "citas" con la lista actualizada
-            )
-            return {"message": "Cita agregada exitosamente"}
+        citas = usuario.get("citas", [])  # Obtenemos la lista de citas existentes o una lista vacía
+        for horaMedica in citas:
+            if cita.motivo == horaMedica["motivo"]:
+                return {"message": "motivo ya existente"}
+
+        # si el motivo no existe se crea la nueva cita en la bd
+        citas.append({"motivo":cita.motivo,"especialidad":cita.especialidad, "fecha":cita.fecha})
+        usuarios_collection.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"citas": citas}}  # Actualizamos el campo "citas" con la lista actualizada
+        )
+        return {"message": "Cita agregada exitosamente"}
     else:
         return {"message": "Usuario no encontrado"}
 

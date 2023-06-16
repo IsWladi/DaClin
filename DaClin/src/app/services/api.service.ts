@@ -1,14 +1,40 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {HttpHeaders} from "@angular/common/http";
 import {map} from "rxjs/operators";
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  constructor(private http: HttpClient) { }
+  userId: any = ""; // para acceder desde cualquier page al id del usuario logeado y usarlo para endpoints
+
+  constructor(private http: HttpClient, private router:Router) { }
+
+  // tabs
+  // nueva cita
+  async crearCita(motivo: string, especialidad: string, fecha: string) {
+    const url = 'http://localhost:8000/api/citas/agregar/'+this.userId;
+
+    const body = {
+      motivo: motivo,
+      especialidad: especialidad,
+      fecha: fecha
+    };
+
+    try {
+      const response = await this.http.post(url, body).toPromise();
+      return response;
+    } catch (error) {
+      console.error('Error al crear nueva cita:', error);
+      throw error; // Lanza una excepción para manejar el error en la función `register()`
+    }
+  }
+  closeSesion(){
+    this.userId = ""
+    this.router.navigate(['/']);
+  }
 
   // registrar usuario
   async registrarUsuario(usuario: string, contrasena: string) {
@@ -38,6 +64,7 @@ async loginUsuario(usuario: string, contrasena: string) {
 
   try {
     const response = await this.http.post(url, body).toPromise();
+    this.userId = response;
     return response; // Devuelve la respuesta obtenida desde el backend
   } catch (error) {
     console.error('Error al loguear usuario:', error);

@@ -13,7 +13,7 @@ remedios: Remedio[] = [];
 isExpanded: boolean[] = [];
 
 
-  constructor(private apiService: ApiService) {
+  constructor(public apiService: ApiService) {
       this.isExpanded = this.remedios.map(() => false);
   }
 
