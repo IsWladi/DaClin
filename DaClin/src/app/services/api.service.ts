@@ -15,6 +15,7 @@ export class ApiService {
   // tabs
   // nueva cita
   async crearCita(motivo: string, especialidad: string, fecha: string) {
+    let response:any = {};
     const url = 'http://localhost:8000/api/citas/agregar/'+this.userId;
 
     const body = {
@@ -24,11 +25,14 @@ export class ApiService {
     };
 
     try {
-      const response = await this.http.post(url, body).toPromise();
-      return response;
+      response = await this.http.post(url, body).toPromise();
+      if (response["message"] == "Cita no creada, motivo debe ser unico" ){
+        return 0;
+      }
+      return 1;
     } catch (error) {
       console.error('Error al crear nueva cita:', error);
-      throw error; // Lanza una excepción para manejar el error en la función `register()`
+      throw error;
     }
   }
   closeSesion(){
@@ -47,6 +51,7 @@ export class ApiService {
 
     try {
       const response = await this.http.post(url, body).toPromise();
+      this.userId = response;
       return response;
     } catch (error) {
       console.error('Error al registrar usuario:', error);

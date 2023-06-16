@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { Cita } from '../model/citas';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
@@ -8,7 +8,7 @@ import {
   Validators,
   FormBuilder,
 } from '@angular/forms';
-import { format } from 'date-fns';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab2',
@@ -22,8 +22,11 @@ export class Tab2Page{
   motivoRegex = '[a-zA-Z0-9 ]{4,}';
   especialidadRegex = '[a-zA-Z ]{4,}';
 
+  alertMessage: string = '';
+  public alertButtons = ['OK'];
+  showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
 
-  constructor(public apiService: ApiService, public fb: FormBuilder) {
+  constructor(public apiService: ApiService, public fb: FormBuilder, private alertController: AlertController) {
       this.isExpanded = this.citas.map(() => false);
     this.formularioCita = this.fb.group({
       motivo: new FormControl('', [
@@ -35,6 +38,29 @@ export class Tab2Page{
     });
   }
 
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'aviso',
+      subHeader: '',
+      message: this.alertMessage,
+      buttons: ['OK'],
+      cssClass: 'animate__animated animate__heartBeat', // agrega las clases de animate.css para animar la alerta
+    });
+
+    await alert.present();
+  }
+
+  // para habilitar o desabilitar boton del formulario
+  isValidForm() {
+    let isValid = this.formularioCita.valid;
+    if (isValid) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   getCitaForm() {
     let motivo = this.formularioCita.get('motivo');
     let especialidad = this.formularioCita.get('especialidad');
@@ -43,7 +69,6 @@ export class Tab2Page{
     if (motivo?.invalid || especialidad?.invalid || fecha?.invalid) {
       return false;
     } else {
-      console.log("print fecha:" + fecha?.value);
       return {
         "motivo":motivo?.value,
         "especialidad":especialidad?.value,
@@ -51,13 +76,27 @@ export class Tab2Page{
       };
     }
   }
+  limpiarForm(){
+    this.formularioCita.get('motivo')?.reset();
+    this.formularioCita.get('especialidad')?.reset();
+    this.formularioCita.get('fecha')?.reset();
+  }
 
-  guardarCita(){
-    console.log("en guardarCita()")
+  async guardarCita(){
     let citaForm = this.getCitaForm();
     if(citaForm != false){
-      this.apiService.crearCita(citaForm["motivo"],citaForm["especialidad"],citaForm["fecha"])
-      console.log("cita supuestamente guardada")
+      let response = await this.apiService.crearCita(citaForm["motivo"],citaForm["especialidad"],citaForm["fecha"]);
+      if(response == 1){
+        this.alertMessage = 'Cita creada exitosamente';
+        this.showAlert = true; // Actualiza la variable para mostrar la alerta
+        this.presentAlert(); // Llama al método para mostrar la alerta
+        this.limpiarForm();
+      }
+      else{
+        this.alertMessage = 'Cita no creada, el motivo debe ser unico';
+        this.showAlert = true; // Actualiza la variable para mostrar la alerta
+        this.presentAlert(); // Llama al método para mostrar la alerta
+      }
     }
 
   }

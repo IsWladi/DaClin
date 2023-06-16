@@ -4,7 +4,7 @@
       <span>
         <ion-button color="light" (click)="apiService.closeSesion()">
           <ion-icon color="primary" name="arrow-back-circle-outline"></ion-icon>
-        <span class="hide-on-xs">Cerrar sesión</span>
+          <span class="hide-on-xs">Cerrar sesión</span>
         </ion-button>
       </span>
     </div>
@@ -25,24 +25,48 @@
           <ion-list>
             <ion-item>
               <ion-label>Motivo:</ion-label>
-              <ion-input formControlName="motivo" placeholder="dolor de muelas"></ion-input>
+              <ion-input
+                formControlName="motivo"
+                placeholder="dolor de muelas"
+              ></ion-input>
             </ion-item>
 
             <ion-item>
               <ion-label>Especialidad:</ion-label>
-              <ion-input formControlName="especialidad" placeholder="Dentista"></ion-input>
+              <ion-input
+                formControlName="especialidad"
+                placeholder="Dentista"
+              ></ion-input>
             </ion-item>
 
             <ion-item>
               <ion-label>Fecha cita:</ion-label>
-              <input formControlName="fecha" type="datetime-local" id="cita-time">
+              <input
+                class="input-datetime"
+                formControlName="fecha"
+                type="datetime-local"
+                id="cita-time"
+              />
             </ion-item>
 
-
             <ion-item>
-              <ion-button class="full-width-button" color="tertiary" (click)="guardarCita()"
+              <ion-button
+                class="full-width-button"
+                color="tertiary"
+                (click)="guardarCita()"
+                *ngIf="isValidForm(); else citaButton"
                 >Guardar cita</ion-button
               >
+              <ng-template #citaButton>
+                <ion-button
+                  class="full-width-button"
+                  color="tertiary"
+                  [disabled]="true"
+                  (click)="guardarCita()"
+                >
+                  Login
+                </ion-button>
+              </ng-template>
             </ion-item>
           </ion-list>
         </form>
@@ -53,13 +77,20 @@
           <h1 class="ion-text-center"><b>Mis citas</b></h1>
         </ion-text>
         <ion-list>
-          <div *ngFor="let cita of citas; let i = index" class="post-it centrado" (click)="toggleExpand(i)">
-            <div class="ion-text-center" [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}">
+          <div
+            *ngFor="let cita of citas; let i = index"
+            class="post-it centrado"
+            (click)="toggleExpand(i)"
+          >
+            <div
+              class="ion-text-center"
+              [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}"
+            >
               <h3>{{ cita.motivo }}</h3>
               <ion-text>
-                <h4 *ngIf="isExpanded[i]"> {{ cita.especialidad }}</h4>
-                <h4 *ngIf="isExpanded[i]"> {{ cita.fecha }}</h4>
-                <h4 *ngIf="isExpanded[i]"> {{ cita.hora }}hrs</h4>
+                <h4 *ngIf="isExpanded[i]">{{ cita.especialidad }}</h4>
+                <h4 *ngIf="isExpanded[i]">{{ cita.fecha }}</h4>
+                <h4 *ngIf="isExpanded[i]">{{ cita.hora }}hrs</h4>
               </ion-text>
             </div>
           </div>

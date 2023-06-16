@@ -100,7 +100,7 @@ async def agregar_cita(cita: Cita, user_id: str):
         citas = usuario.get("citas", [])  # Obtenemos la lista de citas existentes o una lista vacía
         for horaMedica in citas:
             if cita.motivo == horaMedica["motivo"]:
-                return {"message": "motivo ya existente"}
+                return {"message": "Cita no creada, motivo debe ser unico"}
 
         # si el motivo no existe se crea la nueva cita en la bd
         citas.append({"motivo":cita.motivo,"especialidad":cita.especialidad, "fecha":cita.fecha})
