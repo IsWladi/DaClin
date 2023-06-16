@@ -35,18 +35,7 @@
 
             <ion-item>
               <ion-label>Fecha cita:</ion-label>
-              <ion-input formControlName="fecha">
-                <ion-datetime-button slot="end" datetime="datetime">
-                </ion-datetime-button>
-              </ion-input>
-
-              <ion-modal [keepContentsMounted]="true">
-                <ng-template>
-                  <ion-datetime id="datetime">
-                    <span slot="title">Ingresa la fecha de tu hora medica</span>
-                  </ion-datetime>
-                </ng-template>
-              </ion-modal>
+              <input formControlName="fecha" type="datetime-local" id="cita-time">
             </ion-item>
 
 

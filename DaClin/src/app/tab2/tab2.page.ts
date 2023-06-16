@@ -8,6 +8,7 @@ import {
   Validators,
   FormBuilder,
 } from '@angular/forms';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-tab2',
@@ -18,8 +19,8 @@ export class Tab2Page{
   citas: Cita[] = [];
   isExpanded: boolean[] = [];
   formularioCita: FormGroup;
-  motivoRegex = '[a-zA-Z0-9]{4,}';
-  especialidadRegex = '[a-zA-Z]{4,}';
+  motivoRegex = '[a-zA-Z0-9 ]{4,}';
+  especialidadRegex = '[a-zA-Z ]{4,}';
 
 
   constructor(public apiService: ApiService, public fb: FormBuilder) {
@@ -30,7 +31,7 @@ export class Tab2Page{
         Validators.pattern(this.motivoRegex),
       ]),
       especialidad: new FormControl('', [ Validators.required, Validators.pattern(this.especialidadRegex) ]),
-      fecha: new FormControl('')
+      fecha: new FormControl('', Validators.required)
     });
   }
 
