@@ -2,7 +2,7 @@
   <ion-toolbar>
     <div class="ion-text-end">
       <span>
-        <ion-button color="light" (click)="apiService.closeSesion()">
+        <ion-button color="light" (click)="authService.closeSesion()">
           <ion-icon color="primary" name="arrow-back-circle-outline"></ion-icon>
         <span class="hide-on-xs">Cerrar sesión</span>
         </ion-button>
@@ -82,39 +82,23 @@
         <ion-text color="primary">
           <h1 class="ion-text-center"><b>Mis remedios</b></h1>
         </ion-text>
-        <ion-list>
-          <div *ngFor="let remedio of remedios; let i = index" class="post-it centrado" (click)="toggleExpand(i)">
-            <div class="ion-text-center" [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}">
-              <h3>{{ remedio.motivo }}</h3>
-              <ion-text>
-                <h4 *ngIf="isExpanded[i]">Inicio tratamiento: {{ remedio.inicio }} {{ remedio.hora }}</h4>
-                <h4 *ngIf="isExpanded[i]">Instrucción: tomar {{ remedio.cantidad }}(u/g) {{ remedio.remedio }} cada {{ remedio.frecuencia_horas }}hrs por {{ remedio.periodo_dias }} dia/s </h4>
-                <h4 *ngIf="isExpanded[i]">Comentario: {{ remedio.comentario }}</h4>
-              </ion-text>
-            </div>
-          </div>
-        </ion-list>
-        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-          <ion-infinite-scroll-content></ion-infinite-scroll-content>
-        </ion-infinite-scroll>
+        <!-- <ion-list> -->
+        <!--   <div *ngFor="let remedio of remedios; let i = index" class="post-it centrado" (click)="toggleExpand(i)"> -->
+        <!--     <div class="ion-text-center" [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}"> -->
+        <!--       <h3>{{ remedio.motivo }}</h3> -->
+        <!--       <ion-text> -->
+        <!--         <h4 *ngIf="isExpanded[i]">Inicio tratamiento: {{ remedio.inicio }} {{ remedio.hora }}</h4> -->
+        <!--         <h4 *ngIf="isExpanded[i]">Instrucción: tomar {{ remedio.cantidad }}(u/g) {{ remedio.remedio }} cada {{ remedio.frecuencia_horas }}hrs por {{ remedio.periodo_dias }} dia/s </h4> -->
+        <!--         <h4 *ngIf="isExpanded[i]">Comentario: {{ remedio.comentario }}</h4> -->
+        <!--       </ion-text> -->
+        <!--     </div> -->
+        <!--   </div> -->
+        <!-- </ion-list> -->
+        <!-- <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)"> -->
+        <!--   <ion-infinite-scroll-content></ion-infinite-scroll-content> -->
+        <!-- </ion-infinite-scroll> -->
       </ion-col>
 
-      <!-- <ion-col size="12">
-        <h1>Mis citas</h1>
-        <ion-list>
-          <div *ngFor="let cita of citas; let i = index" class="post-it" (click)="toggleExpand(i)">
-            <div [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}">
-              <ion-label>{{ cita.nombre }}</ion-label>
-              <ion-label *ngIf="isExpanded[i]"><b>fecha</b>: {{ cita.fecha }}</ion-label>
-              <ion-label *ngIf="isExpanded[i]"><b>hora</b>: {{ cita.hora }}</ion-label>
-              <ion-label *ngIf="isExpanded[i]"><b>comentario</b>: {{ cita.comentario }}</ion-label>
-            </div>
-          </div>
-        </ion-list>
-        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-          <ion-infinite-scroll-content></ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </ion-col> -->
     </ion-row>
   </ion-grid>
 </ion-content>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { AuthService } from '../services/autenticacion/auth.service';
 import { Router } from '@angular/router';
-import { User } from '../model/users';
 import { AlertController } from '@ionic/angular';
 import {
   FormGroup,
@@ -25,7 +24,7 @@ export class LoginPage implements OnInit {
   usernameRegex = '[a-zA-Z0-9]{3,}';
 
   constructor(
-    private apiService: ApiService,
+    private apiService: AuthService,
     private router: Router,
     private alertController: AlertController,
     public fb: FormBuilder
@@ -36,6 +35,7 @@ export class LoginPage implements OnInit {
         Validators.pattern(this.usernameRegex),
       ]),
       password: new FormControl('', Validators.required),
+      saveConnection: new FormControl(false),
     });
   }
 
@@ -66,13 +66,18 @@ export class LoginPage implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.apiService.isLoggedIn()) {
+      this.router.navigate(['/tabs/tabs/tab1']);
+    }
+  }
   async login() {
     try {
       let username = this.formularioLogin.get('nombre')?.value;
       let password = this.formularioLogin.get('password')?.value;
+      let saveConnection = this.formularioLogin.get('saveConnection')?.value;
 
-      const user = await this.apiService.loginUsuario(username, password);
+      const user = await this.apiService.loginUsuario(username, password, saveConnection);
       if (user) {
         this.router.navigate(['/tabs/tabs/tab1']);
       } else {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { PagesEndpointsService } from '../services/tabs/pages-endpoints.service';
+import { AuthService } from '../services/autenticacion/auth.service';
 
 @Component({
   selector: 'app-tab4',
@@ -8,7 +9,7 @@ import { ApiService } from '../services/api.service';
 })
 export class Tab4Page implements OnInit {
 
-  constructor(public apiService: ApiService) { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit() {
   }

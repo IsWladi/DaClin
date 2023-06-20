@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { AuthService } from '../services/autenticacion/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../model/users';
 import { AlertController } from '@ionic/angular';
@@ -16,7 +16,6 @@ import {
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  usuarios: any = []; // Variable para almacenar los usuarios registrados para comprobar si existe el usuario
   alertMessage: string = '';
   public alertButtons = ['OK'];
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
@@ -27,7 +26,7 @@ export class RegisterPage implements OnInit {
 
   constructor(
     public fb: FormBuilder,
-    private apiService: ApiService,
+    private apiService: AuthService,
     private router: Router,
     private alertController: AlertController
   ) {
@@ -84,7 +83,9 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
-    this.usuarios = this.apiService.getUsers();
+    if (this.apiService.isLoggedIn()) {
+      this.router.navigate(['/tabs/tabs/tab1']);
+    }
   }
   async register() {
     try {

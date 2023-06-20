@@ -103,6 +103,14 @@ async def agregar_cita(cita: Cita, user_id: str):
     else:
         return {"message": "Usuario no encontrado"}
 
+@app.get("/api/citas/usuario/{user_id}")
+async def obtener_citas_usuario(user_id: str):
+    citas = usuarios_collection.find_one({"_id": ObjectId(user_id)}, {"citas": True, "_id": False})
+    if citas:
+        return json.loads(dumps(citas["citas"]))
+    else:
+        return "No document found"
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}

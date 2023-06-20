@@ -26,6 +26,10 @@
                 Contraseña obligatoria
               </div>
             </ion-item>
+            <ion-item>
+              <ion-checkbox formControlName="saveConnection" slot="start"></ion-checkbox>
+              <ion-label>¿Desea mantenerse conectado?</ion-label>
+            </ion-item>
           </form>
           <div id="margin-reg" class="ion-text-center">
             <a [routerLink]="['/register']">¿No tienes una cuenta?</a>

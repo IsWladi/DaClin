@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { PagesEndpointsService } from '../services/tabs/pages-endpoints.service';
+import { AuthService } from '../services/autenticacion/auth.service';
 import { Cita } from '../model/citas';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import {
@@ -16,7 +17,7 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page{
-  citas: Cita[] = [];
+  citas: any = [];
   isExpanded: boolean[] = [];
   formularioCita: FormGroup;
   motivoRegex = '[a-zA-Z0-9 ]{4,}';
@@ -26,7 +27,7 @@ export class Tab2Page{
   public alertButtons = ['OK'];
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
 
-  constructor(public apiService: ApiService, public fb: FormBuilder, private alertController: AlertController) {
+  constructor(public auth:AuthService,private apiService:PagesEndpointsService, public fb: FormBuilder, private alertController: AlertController) {
       this.isExpanded = this.citas.map(() => false);
     this.formularioCita = this.fb.group({
       motivo: new FormControl('', [
@@ -91,9 +92,15 @@ export class Tab2Page{
         this.showAlert = true; // Actualiza la variable para mostrar la alerta
         this.presentAlert(); // Llama al método para mostrar la alerta
         this.limpiarForm();
+        this.ionViewDidEnter(); // actualizar lista
       }
-      else{
+      else if(response == 0){
         this.alertMessage = 'Cita no creada, el motivo debe ser unico';
+        this.showAlert = true; // Actualiza la variable para mostrar la alerta
+        this.presentAlert(); // Llama al método para mostrar la alerta
+      }
+      else if(response == 404){
+        this.alertMessage = 'debe iniciar sesion para crear una cita';
         this.showAlert = true; // Actualiza la variable para mostrar la alerta
         this.presentAlert(); // Llama al método para mostrar la alerta
       }
@@ -105,13 +112,26 @@ export class Tab2Page{
     this.isExpanded[index] = !this.isExpanded[index];
   }
 
-  ionViewDidEnter() {
-    this.citas = this.apiService.getCitas();
-    // hacer que this.citas[i].motivo sea la primera letra en mayúscula
-    this.citas.forEach(cita => {
-      cita.motivo = cita.motivo[0].toUpperCase() + cita.motivo.slice(1);
-      cita.especialidad = cita.especialidad[0].toUpperCase() + cita.especialidad.slice(1);
-    });
+   ionViewDidEnter() {
+     this.apiService.getCitas()
+     .then(citas => {
+       this.citas = citas;
+       // hacer que this.citas[i].motivo sea la primera letra en mayúscula
+       if(this.citas != 0 && this.citas != 404){
+         this.citas.forEach((cita:Cita) => {
+           cita.motivo = cita.motivo[0].toUpperCase() + cita.motivo.slice(1);
+           cita.especialidad = cita.especialidad[0].toUpperCase() + cita.especialidad.slice(1);
+         });
+         // formatear fecha
+         this.citas.forEach((cita:Cita) => {
+           cita.fecha = cita.fecha.slice(0,10) + ' ' + cita.fecha.slice(11,16);
+         });
+       }
+       console.log(this.citas);
+     })
+     .catch(error => {
+       console.error('Error al obtener citas:', error);
+     });
 
   }
 

@@ -2,7 +2,7 @@
   <ion-toolbar>
     <div class="ion-text-end">
       <span>
-        <ion-button color="light" (click)="apiService.closeSesion()">
+        <ion-button color="light" (click)="auth.closeSesion()">
           <ion-icon color="primary" name="arrow-back-circle-outline"></ion-icon>
           <span class="hide-on-xs">Cerrar sesión</span>
         </ion-button>
@@ -90,7 +90,6 @@
               <ion-text>
                 <h4 *ngIf="isExpanded[i]">{{ cita.especialidad }}</h4>
                 <h4 *ngIf="isExpanded[i]">{{ cita.fecha }}</h4>
-                <h4 *ngIf="isExpanded[i]">{{ cita.hora }}hrs</h4>
               </ion-text>
             </div>
           </div>
