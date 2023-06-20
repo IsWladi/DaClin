@@ -1,7 +1,6 @@
 fastapi
-uvicorn
+uvicorn[standard]
 pymongo
-python-decouple
 bcrypt
 pydantic
 

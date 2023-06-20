@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class ApiService {
 
   userId: any = ""; // para acceder desde cualquier page al id del usuario logeado y usarlo para endpoints
+  endPointBase = "https://daclinapi-1-f4557501.deta.app/"
 
   constructor(private http: HttpClient, private router:Router) { }
 
@@ -16,7 +17,7 @@ export class ApiService {
   // nueva cita
   async crearCita(motivo: string, especialidad: string, fecha: string) {
     let response:any = {};
-    const url = 'http://localhost:8000/api/citas/agregar/'+this.userId;
+    const url = this.endPointBase+'api/citas/agregar/'+this.userId;
 
     const body = {
       motivo: motivo,
@@ -42,7 +43,7 @@ export class ApiService {
 
   // registrar usuario
   async registrarUsuario(usuario: string, contrasena: string) {
-    const url = 'http://localhost:8000/api/users/register/';
+    const url = this.endPointBase+'api/users/register/';
 
     const body = {
       username: usuario,
@@ -60,7 +61,7 @@ export class ApiService {
   }
 // login usuario
 async loginUsuario(usuario: string, contrasena: string) {
-  const url = 'http://localhost:8000/api/users/login/';
+  const url = this.endPointBase+'api/users/login/';
 
   const body = {
     username: usuario,
@@ -177,7 +178,8 @@ async loginUsuario(usuario: string, contrasena: string) {
 
   }
   getUsers(){
-    return this.http.get('http://localhost:8000/api/users').pipe(
+    const url = this.endPointBase + 'api/users';
+    return this.http.get(url).pipe(
       map((res: any) => {
         return res; // Retorna la respuesta JSON completa
       })
