@@ -5,7 +5,6 @@ from bson import ObjectId
 from bson.json_util import dumps
 from fastapi.middleware.cors import CORSMiddleware
 import json
-from decouple import config
 import bcrypt
 
 # para definir el modelo de datos(body de la peticion)
@@ -23,19 +22,10 @@ class Cita(BaseModel):
 
 app = FastAPI()
 
-# obtener variables de entorno de ../.env
-IP_HOST = config('LAN_INALAMBRICA_WIFI_IPV4', default='localhost')
-
-# Configurar los orígenes permitidos en los encabezados CORS
-origins = [
-    f"http://{IP_HOST}:8100",  # Reemplaza con la URL de tu aplicación Angular
-    f"http://{IP_HOST}:8200"
-]
-
 # Agregar el middleware CORS a la aplicación
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
@@ -45,12 +35,13 @@ app.add_middleware(
 username = "admin"
 password = "myPassword123"
 # Crear una instancia del cliente de MongoDB
-mongo_client = MongoClient("mongodb://DaClin_bd:27017/",
-                           username=username,
-                           password=password)
+# con mongo atlas
+mongo_client = MongoClient("mongodb+srv://daClinMongoRemote:bLvhEQt81pN52dnT@clusterdaclin.zqephrf.mongodb.net/?retryWrites=true&w=majority")
 
 # Obtener una referencia a la base de datos
-mongo_db = mongo_client["DaClin"]
+# con atlas
+mongo_db = mongo_client["ClusterDaClin"]
+
 usuarios_collection = mongo_db["usuarios"]
 
 # para testear
