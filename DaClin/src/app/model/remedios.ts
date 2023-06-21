@@ -1,10 +1,8 @@
 export interface Remedio {
-  remedio: string;
+  nombre: string;
   motivo: string;
-  cantidad: number;
-  frecuencia_horas: number;
-  periodo_dias: number;
-  inicio: string;
-  hora: string;
-  comentario: string;
+  cantidad: string;
+  cada: string;
+  durante: string;
+  fecha: string;
 }

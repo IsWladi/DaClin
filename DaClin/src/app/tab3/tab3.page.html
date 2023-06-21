@@ -25,52 +25,63 @@
 
       <ion-col class="centrado" size="6">
         <div id="lst-datos-tratamiento">
+
+        <form [formGroup]="formularioRemedio">
           <ion-list>
             <ion-item>
               <ion-label>Motivo remedio:</ion-label>
-              <ion-input placeholder="ej: controlar la pre diabetes"></ion-input>
+              <ion-input formControlName="motivo" placeholder="ej: controlar la pre diabetes"></ion-input>
             </ion-item>
 
             <ion-item>
               <ion-label>Nombre remedio:</ion-label>
-              <ion-input placeholder="ej: remedioFicticio 500g"></ion-input>
+              <ion-input formControlName="nombre" placeholder="ej: remedioFicticio 500g"></ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-label>Cantidad(u/g):</ion-label>
-              <ion-input placeholder="1"></ion-input>
+              <ion-label>Cantidad:</ion-label>
+              <ion-input formControlName="cantidad" placeholder="ej:1ml o 1L o 500mg"></ion-input>
             </ion-item>
 
             <ion-item>
               <ion-label>cada(horas):</ion-label>
-              <ion-input placeholder="8"></ion-input>
+              <ion-input formControlName="cada" placeholder="8"></ion-input>
             </ion-item>
             <ion-item>
-              <ion-label>durante(dias):</ion-label>
-              <ion-input placeholder="4"></ion-input>
+              <ion-label>durante:</ion-label>
+              <ion-input formControlName="durante" placeholder="ej:5 dias o indefinido"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label>Inicio tratamiento:</ion-label>
-              <ion-input>
-                <ion-datetime-button slot="end" datetime="datetime">
-                </ion-datetime-button>
-              </ion-input>
-
-              <ion-modal [keepContentsMounted]="true">
-                <ng-template>
-                  <ion-datetime id="datetime">
-                    <span slot="title">Fecha inicio del tratamiento</span>
-                  </ion-datetime>
-                </ng-template>
-              </ion-modal>
+              <input
+                class="input-datetime"
+                formControlName="fecha"
+                type="datetime-local"
+                id="remedio-time"
+              />
             </ion-item>
 
             <ion-item>
-              <ion-button class="full-width-button" color="tertiary"
-                >Guardar tratamiento</ion-button
+              <ion-button
+                class="full-width-button"
+                color="tertiary"
+                (click)="guardarRemedio()"
+                *ngIf="isValidForm(); else tratamientoButton"
+                >Guardar cita</ion-button
               >
+              <ng-template #tratamientoButton>
+                <ion-button
+                  class="full-width-button"
+                  color="tertiary"
+                  [disabled]="true"
+                  (click)="guardarRemedio()"
+                >
+                  Guardar tratamiento
+                </ion-button>
+              </ng-template>
             </ion-item>
           </ion-list>
+        </form>
         </div>
       </ion-col>
 

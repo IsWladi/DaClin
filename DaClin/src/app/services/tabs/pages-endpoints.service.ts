@@ -37,6 +37,35 @@ export class PagesEndpointsService {
     }
   }
 
+  async crearRemedio(motivo: string, nombre: string, cantidad: string, cada: string, durante:string, fecha: string) {
+    let response:any = {};
+    let user = this.auth.getUserId();
+    if (user == "") {
+      return 404;
+    }
+    const url = this.auth.endPointBase+'api/remedios/agregar/'+user;
+
+    const body = {
+      motivo: motivo,
+      nombre: nombre,
+      cantidad: cantidad,
+      cada: cada,
+      durante: durante,
+      fecha: fecha
+    };
+
+    try {
+      response = await this.http.post(url, body).toPromise();
+      if (response["message"] == "Remedio no creado, remedio debe ser unico" ){
+        return 0;
+      }
+      return 1;
+    } catch (error) {
+      console.error('Error al crear nuevo remedio:', error);
+      throw error;
+    }
+  }
+
   async getCitas() {
     let response:any = {};
     let user = this.auth.getUserId();
