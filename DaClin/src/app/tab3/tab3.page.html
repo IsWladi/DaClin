@@ -4,7 +4,7 @@
       <span>
         <ion-button color="light" (click)="authService.closeSesion()">
           <ion-icon color="primary" name="arrow-back-circle-outline"></ion-icon>
-        <span class="hide-on-xs">Cerrar sesión</span>
+          <span class="hide-on-xs">Cerrar sesión</span>
         </ion-button>
       </span>
     </div>
@@ -20,96 +20,188 @@
           <h1 class="ion-text-center"><b>Nuevo remedio</b></h1>
         </ion-text>
       </ion-col>
-      <ion-col>
-      </ion-col>
+      <ion-col> </ion-col>
 
       <ion-col class="centrado" size="6">
         <div id="lst-datos-tratamiento">
+          <form [formGroup]="formularioRemedio">
+            <ion-list>
+              <ion-item>
+                <ion-label position="stacked">Motivo remedio:</ion-label>
+                <ion-input
+                  formControlName="motivo"
+                  placeholder="ej: controlar la pre diabetes"
+                ></ion-input>
+              </ion-item>
 
-        <form [formGroup]="formularioRemedio">
-          <ion-list>
-            <ion-item>
-              <ion-label>Motivo remedio:</ion-label>
-              <ion-input formControlName="motivo" placeholder="ej: controlar la pre diabetes"></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Nombre remedio:</ion-label>
+                <ion-input
+                  formControlName="nombre"
+                  placeholder="ej: remedioFicticio 500g"
+                ></ion-input>
+              </ion-item>
 
-            <ion-item>
-              <ion-label>Nombre remedio:</ion-label>
-              <ion-input formControlName="nombre" placeholder="ej: remedioFicticio 500g"></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Cantidad:</ion-label>
+                <div style="display: flex; align-items: center">
+                  <ion-input
+                    formControlName="cantidad"
+                    placeholder="ej: 1u o 15ml"
+                  ></ion-input>
+                  <ion-button color="light" id="hover-trigger-cantidad">
+                    <ion-icon
+                      color="dark"
+                      name="information-circle-outline"
+                    ></ion-icon>
+                  </ion-button>
+                </div>
+                <ion-popover trigger="hover-trigger-cantidad" triggerAction="hover">
+                  <ng-template>
+                    <ion-content class="ion-padding">
+                        <ion-list>
+                          <ion-title>Formato requerido</ion-title>
+                          <ion-item>
+                            <div style="display: flex; flex-direction: column">
+                              <div>
+                                <ion-note>ej: 150mg</ion-note>
+                              </div>
+                              <div>
+                                <ion-note>ej: 2g</ion-note>
+                              </div>
+                              <div>
+                                <ion-note>ej: 1000mcg</ion-note>
+                              </div>
+                              <div>
+                                <ion-note>ej: 20ml</ion-note>
+                              </div>
+                              <div>
+                                <ion-note>ej: 1L</ion-note>
+                              </div>
+                              <div>
+                                <ion-note>ej: 3u</ion-note>
+                              </div>
+                            </div>
+                          </ion-item>
+                        </ion-list>
+                    </ion-content>
+                  </ng-template>
+                </ion-popover>
+              </ion-item>
 
-            <ion-item>
-              <ion-label>Cantidad:</ion-label>
-              <ion-input formControlName="cantidad" placeholder="ej:1ml o 1L o 500mg"></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-label position="stacked">cada(horas):</ion-label>
+                <ion-input formControlName="cada" placeholder="8"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">durante:</ion-label>
+                <div style="display: flex; align-items: center">
+                  <ion-input
+                    formControlName="durante"
+                    placeholder="ej: 5 dias o 2 meses"
+                  ></ion-input>
+                  <ion-button color="light" id="hover-trigger">
+                    <ion-icon
+                      color="dark"
+                      name="information-circle-outline"
+                    ></ion-icon>
+                  </ion-button>
+                </div>
+                <ion-popover trigger="hover-trigger" triggerAction="hover">
+                  <ng-template>
+                    <ion-content class="ion-padding">
+                      <ion-list>
+                        <ion-title>Formato requerido</ion-title>
+                        <ion-item>
+                          <div style="display: flex; flex-direction: column">
+                            <div>
+                              <ion-note>ej: 5 días</ion-note>
+                            </div>
+                            <div>
+                              <ion-note>ej: 2 semanas</ion-note>
+                            </div>
+                            <div>
+                              <ion-note>ej: 4 meses</ion-note>
+                            </div>
+                            <div>
+                              <ion-note>ej: 1 año</ion-note>
+                            </div>
+                            <div>
+                              <ion-note>ej: indefinido</ion-note>
+                            </div>
+                          </div>
+                        </ion-item>
+                      </ion-list>
+                    </ion-content>
+                  </ng-template>
+                </ion-popover>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Inicio tratamiento:</ion-label>
+                <input
+                  class="input-datetime"
+                  formControlName="fecha"
+                  type="datetime-local"
+                  id="remedio-time"
+                />
+              </ion-item>
 
-            <ion-item>
-              <ion-label>cada(horas):</ion-label>
-              <ion-input formControlName="cada" placeholder="8"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label>durante:</ion-label>
-              <ion-input formControlName="durante" placeholder="ej:5 dias o indefinido"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label>Inicio tratamiento:</ion-label>
-              <input
-                class="input-datetime"
-                formControlName="fecha"
-                type="datetime-local"
-                id="remedio-time"
-              />
-            </ion-item>
-
-            <ion-item>
-              <ion-button
-                class="full-width-button"
-                color="tertiary"
-                (click)="guardarRemedio()"
-                *ngIf="isValidForm(); else tratamientoButton"
-                >Guardar cita</ion-button
-              >
-              <ng-template #tratamientoButton>
+              <ion-item>
                 <ion-button
                   class="full-width-button"
                   color="tertiary"
-                  [disabled]="true"
                   (click)="guardarRemedio()"
+                  *ngIf="isValidForm(); else tratamientoButton"
+                  >Guardar cita</ion-button
                 >
-                  Guardar tratamiento
-                </ion-button>
-              </ng-template>
-            </ion-item>
-          </ion-list>
-        </form>
+                <ng-template #tratamientoButton>
+                  <ion-button
+                    class="full-width-button"
+                    color="tertiary"
+                    [disabled]="true"
+                    (click)="guardarRemedio()"
+                  >
+                    Guardar tratamiento
+                  </ion-button>
+                </ng-template>
+              </ion-item>
+            </ion-list>
+          </form>
         </div>
       </ion-col>
 
-
-      <ion-col>
-      </ion-col>
+      <ion-col> </ion-col>
 
       <ion-col size="12">
         <ion-text color="primary">
           <h1 class="ion-text-center"><b>Mis remedios</b></h1>
         </ion-text>
-        <!-- <ion-list> -->
-        <!--   <div *ngFor="let remedio of remedios; let i = index" class="post-it centrado" (click)="toggleExpand(i)"> -->
-        <!--     <div class="ion-text-center" [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}"> -->
-        <!--       <h3>{{ remedio.motivo }}</h3> -->
-        <!--       <ion-text> -->
-        <!--         <h4 *ngIf="isExpanded[i]">Inicio tratamiento: {{ remedio.inicio }} {{ remedio.hora }}</h4> -->
-        <!--         <h4 *ngIf="isExpanded[i]">Instrucción: tomar {{ remedio.cantidad }}(u/g) {{ remedio.remedio }} cada {{ remedio.frecuencia_horas }}hrs por {{ remedio.periodo_dias }} dia/s </h4> -->
-        <!--         <h4 *ngIf="isExpanded[i]">Comentario: {{ remedio.comentario }}</h4> -->
-        <!--       </ion-text> -->
-        <!--     </div> -->
-        <!--   </div> -->
-        <!-- </ion-list> -->
-        <!-- <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)"> -->
-        <!--   <ion-infinite-scroll-content></ion-infinite-scroll-content> -->
-        <!-- </ion-infinite-scroll> -->
+        <ion-list>
+          <div
+            *ngFor="let remedio of remedios; let i = index"
+            class="post-it centrado"
+            (click)="toggleExpand(i)"
+          >
+            <div
+              class="ion-text-center"
+              [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}"
+            >
+              <h3>{{ remedio.motivo }}</h3>
+              <ion-text>
+                <h4 *ngIf="isExpanded[i]">
+                  Inicio tratamiento: {{ remedio.fecha }}
+                </h4>
+                <h4 *ngIf="isExpanded[i]">
+                  Instrucción: tomar <span class="resaltado-text">{{ remedio.cantidad }}</span> del remedio <span class="resaltado-text">{{remedio.nombre }}</span> cada <span class="resaltado-text">{{ remedio.cada }}</span> durante el periodo: <span class="resaltado-text">{{remedio.durante }}</span>
+                </h4>
+              </ion-text>
+            </div>
+          </div>
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </ion-col>
-
     </ion-row>
   </ion-grid>
 </ion-content>

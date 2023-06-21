@@ -19,14 +19,14 @@ import {
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page{
-  remedios: Remedio[] = [];
+  remedios: any = [];
   isExpanded: boolean[] = [];
   formularioRemedio: FormGroup;
   motivoRegex = '[a-zA-Z0-9 ]{4,}';
   especialidadRegex = '[a-zA-Z ]{4,}';
   numerosRegex = '[0-9]{1,}';
   cantidadRegex = '^\\d+(?:mg|g|mcg|ml|L|u)$';
-  duranteRegex = '^(?:\\d+\\s(?:dias|meses|años)|indefinido)$';
+  duranteRegex = '^(?:\\d+\\s(?:dias|semanas|meses|años)|indefinido)$';
 
   alertMessage: string = '';
   public alertButtons = ['OK'];
@@ -117,7 +117,7 @@ export class Tab3Page{
         this.showAlert = true; // Actualiza la variable para mostrar la alerta
         this.presentAlert(); // Llama al método para mostrar la alerta
         this.limpiarForm();
-        // this.ionViewDidEnter(); // actualizar lista
+        this.ionViewDidEnter(); // actualizar lista
       }
       else if(response == 0){
         this.alertMessage = 'Remedio no creado, el remedio debe ser unico';
@@ -133,24 +133,39 @@ export class Tab3Page{
 
   }
 
-  // toggleExpand(index: number) {
-  //   this.isExpanded[index] = !this.isExpanded[index];
-  // }
+   toggleExpand(index: number) {
+     this.isExpanded[index] = !this.isExpanded[index];
+   }
 
-  // ionViewDidEnter() {
-    // this.remedios = this.apiService.getRemedios();
-    // hacer que this.remedios[i].nombre sea la primera letra en mayúscula
-    // this.remedios.forEach(remedio => {
-    //   remedio.remedio = remedio.remedio[0].toUpperCase() + remedio.remedio.slice(1);
-    // });
-  // }
+   ionViewDidEnter() {
+     this.apiService.getRemedios()
+     .then(medicamentos => {
+       this.remedios = medicamentos;
+       // hacer que this.remedios[i].motivo sea la primera letra en mayúscula
+       if(this.remedios != 0 && this.remedios != 404){
+         this.remedios.forEach((remedio:Remedio) => {
+           remedio.motivo = remedio.motivo[0].toUpperCase() + remedio.motivo.slice(1);
+           remedio.nombre = remedio.nombre[0].toUpperCase() + remedio.nombre.slice(1);
+         });
+         // formatear fecha
+         this.remedios.forEach((remedio:Remedio) => {
+           remedio.fecha = remedio.fecha.slice(0,10) + ' ' + remedio.fecha.slice(11,16);
+         });
+       }
+       console.log(this.remedios);
+     })
+     .catch(error => {
+       console.error('Error al obtener remedios:', error);
+     });
+
+  }
 
 
-  // onIonInfinite(ev: any) {
-  //   this.remedios;
-  //   setTimeout(() => {
-  //     (ev as InfiniteScrollCustomEvent).target.complete();
-  //   }, 500);
-  // }
+  onIonInfinite(ev: any) {
+    this.remedios;
+    setTimeout(() => {
+      (ev as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
+  }
 
 }

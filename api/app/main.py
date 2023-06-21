@@ -147,13 +147,23 @@ async def agregar_remedio(remedio: Remedio, user_id: str):
     else:
         return {"message": "Usuario no encontrado"}
 
-
+# obtener citas de un usuario
 @app.get("/api/citas/usuario/{user_id}", status_code=200)
 async def obtener_citas_usuario(user_id: str):
     citas = usuarios_collection.find_one({"_id": ObjectId(user_id)}, {
                                          "citas": True, "_id": False})
     if citas:
         return json.loads(dumps(citas["citas"]))
+    else:
+        return "No document found"
+
+# obtener remedios de un usuario
+@app.get("/api/remedios/usuario/{user_id}", status_code=200)
+async def obtener_remedios_usuario(user_id: str):
+    remedios = usuarios_collection.find_one({"_id": ObjectId(user_id)}, {
+                                         "remedios": True, "_id": False})
+    if remedios:
+        return json.loads(dumps(remedios["remedios"]))
     else:
         return "No document found"
 
