@@ -22,6 +22,7 @@ export class Tab3Page{
   remedios: any = [];
   isExpanded: boolean[] = [];
   formularioRemedio: FormGroup;
+  isNewForm: boolean = false;
   motivoRegex = '[a-zA-Z0-9 ]{4,}';
   especialidadRegex = '[a-zA-Z ]{4,}';
   numerosRegex = '[0-9]{1,}';
@@ -62,6 +63,14 @@ export class Tab3Page{
     await alert.present();
   }
 
+
+  // para habilitar o desabilitar boton del formulario
+  createForm(){
+    this.isNewForm = true;
+  }
+  resetForm(){
+    this.isNewForm = false;
+  }
 
   getRemedioForm() {
     let motivo = this.formularioRemedio.get('motivo');
@@ -105,6 +114,7 @@ export class Tab3Page{
     this.formularioRemedio.get('cada')?.reset();
     this.formularioRemedio.get('durante')?.reset();
     this.formularioRemedio.get('fecha')?.reset();
+    this.resetForm();
   }
 
 
@@ -138,6 +148,9 @@ export class Tab3Page{
    }
 
    ionViewDidEnter() {
+     // hacer que las cards esten contraidas
+     this.isExpanded = [];
+     this.resetForm(); // ocultar formulario
      this.apiService.getRemedios()
      .then(medicamentos => {
        this.remedios = medicamentos;

@@ -27,6 +27,12 @@
 
 /* background-image: linear-gradient(to right top, #ffffff, #e5e7ff, #c1d1ff, #8fbeff, #34aeff); */
 
+.small-icon-button {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px; /* Ajusta el margen según sea necesario */
+  font-size: 14px; /* Ajusta el tamaño de fuente según sea necesario */
+}
 
 .resaltado-text{
   color: #34aeff;

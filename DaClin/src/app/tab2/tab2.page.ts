@@ -20,6 +20,7 @@ export class Tab2Page{
   citas: any = [];
   isExpanded: boolean[] = [];
   formularioCita: FormGroup;
+  isNewForm: boolean = false;
   motivoRegex = '[a-zA-Z0-9 ]{4,}';
   especialidadRegex = '[a-zA-Z ]{4,}';
 
@@ -53,6 +54,13 @@ export class Tab2Page{
   }
 
   // para habilitar o desabilitar boton del formulario
+  createForm(){
+    this.isNewForm = true;
+  }
+  resetForm(){
+    this.isNewForm = false;
+  }
+
   isValidForm() {
     let isValid = this.formularioCita.valid;
     if (isValid) {
@@ -81,6 +89,7 @@ export class Tab2Page{
     this.formularioCita.get('motivo')?.reset();
     this.formularioCita.get('especialidad')?.reset();
     this.formularioCita.get('fecha')?.reset();
+    this.resetForm();
   }
 
   async guardarCita(){
@@ -113,6 +122,9 @@ export class Tab2Page{
   }
 
    ionViewDidEnter() {
+     // hacer que las cards esten contraidas
+     this.isExpanded = [];
+     this.resetForm(); // ocultar formulario
      this.apiService.getCitas()
      .then(citas => {
        this.citas = citas;
@@ -127,7 +139,6 @@ export class Tab2Page{
            cita.fecha = cita.fecha.slice(0,10) + ' ' + cita.fecha.slice(11,16);
          });
        }
-       console.log(this.citas);
      })
      .catch(error => {
        console.error('Error al obtener citas:', error);

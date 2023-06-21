@@ -16,67 +16,85 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <ion-text color="primary">
-          <h1 class="ion-text-center"><b>Nueva cita</b></h1>
-        </ion-text>
+        <ion-text color="primary"> </ion-text>
       </ion-col>
       <ion-col size="12" class="centrado">
-        <form [formGroup]="formularioCita">
-          <ion-list>
-            <ion-item>
-              <ion-label>Motivo:</ion-label>
-              <ion-input
-                formControlName="motivo"
-                placeholder="dolor de muelas"
-              ></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Especialidad:</ion-label>
-              <ion-input
-                formControlName="especialidad"
-                placeholder="Dentista"
-              ></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Fecha cita:</ion-label>
-              <input
-                class="input-datetime"
-                formControlName="fecha"
-                type="datetime-local"
-                id="cita-time"
-              />
-            </ion-item>
-
-            <ion-item>
+        <ion-text color="primary">
+          <h1 class="ion-text-center">
+            <b>Mis citas</b>
+          </h1>
+        </ion-text>
+      </ion-col>
+      <ion-col></ion-col>
+      <ion-col size="12" sizeLg="8">
               <ion-button
                 class="full-width-button"
-                color="tertiary"
-                (click)="guardarCita()"
-                *ngIf="isValidForm(); else citaButton"
-                >Guardar cita</ion-button
+                color="light"
+                (click)="createForm()"
+                *ngIf="isNewForm==false; else nuevaCita"
               >
-              <ng-template #citaButton>
-                <ion-button
-                  class="full-width-button"
-                  color="tertiary"
-                  [disabled]="true"
-                  (click)="guardarCita()"
-                >
-                  Guardar cita
-                </ion-button>
-              </ng-template>
-            </ion-item>
-          </ion-list>
-        </form>
-      </ion-col>
+                <ion-icon size="large" color="success" name="add-circle-outline"></ion-icon>
+              </ion-button>
+          <ng-template #nuevaCita>
+            <form
+              class="animate__animated animate__jello"
+              [formGroup]="formularioCita"
+            >
+              <ion-list>
+                <ion-item>
+                  <ion-label position="stacked">Motivo:</ion-label>
+                  <ion-input
+                    formControlName="motivo"
+                    placeholder="dolor de muelas"
+                  ></ion-input>
+                </ion-item>
 
-      <ion-col size="12">
-        <ion-text color="primary">
-          <h1 class="ion-text-center"><b>Mis citas</b></h1>
-        </ion-text>
-        <ion-list>
+                <ion-item>
+                  <ion-label position="stacked">Especialidad:</ion-label>
+                  <ion-input
+                    formControlName="especialidad"
+                    placeholder="Dentista"
+                  ></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Fecha cita:</ion-label>
+                  <input
+                    class="input-datetime"
+                    formControlName="fecha"
+                    type="datetime-local"
+                    id="cita-time"
+                  />
+                </ion-item>
+
+                <ion-item>
+                  <ion-button
+                    class="full-width-button"
+                    color="tertiary"
+                    (click)="guardarCita()"
+                    *ngIf="isValidForm(); else citaButton"
+                    >Guardar cita</ion-button
+                  >
+                  <ng-template #citaButton>
+                    <ion-button
+                      class="full-width-button"
+                      color="tertiary"
+                      [disabled]="true"
+                      (click)="guardarCita()"
+                    >
+                      Guardar cita
+                    </ion-button>
+                  </ng-template>
+                </ion-item>
+              </ion-list>
+            </form>
+          </ng-template>
+      </ion-col>
+      <ion-col></ion-col>
+      <ion-col size="12"></ion-col>
+      <ion-col></ion-col>
+      <ion-col size="12" sizeLg="8">
+        <ion-list class="animate__animated animate__shakeX">
           <div
             *ngFor="let cita of citas; let i = index"
             class="post-it centrado"
@@ -87,6 +105,7 @@
               [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}"
             >
               <h3>{{ cita.motivo }}</h3>
+              <span>{{cita.especialidad}}</span>
               <ion-text>
                 <h4 *ngIf="isExpanded[i]">{{ cita.especialidad }}</h4>
                 <h4 *ngIf="isExpanded[i]">{{ cita.fecha }}</h4>
@@ -98,6 +117,7 @@
           <ion-infinite-scroll-content></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-col>
+      <ion-col></ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
