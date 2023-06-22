@@ -187,33 +187,35 @@
       <ion-col></ion-col>
       <ion-col size="10" sizeLg="6">
         <ion-list class="animate__animated animate__shakeX">
-          <div
-            *ngFor="let remedio of remedios; let i = index"
-            class="post-it centrado"
-            (click)="toggleExpand(i)"
-          >
+          <ng-container *ngIf="remedios !== 0">
             <div
-              class="ion-text-center"
-              [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}"
-            >
-              <h3>{{ remedio.motivo }}</h3>
-              <span>{{ remedio.nombre }}</span>
-              <ion-text>
-                <h4 *ngIf="isExpanded[i]">
-                  Inicio tratamiento: {{ remedio.fecha }}
-                </h4>
-                <h4 *ngIf="isExpanded[i]">
-                  Instrucción: tomar
-                  <span class="resaltado-text">{{ remedio.cantidad }}</span> del
-                  remedio
-                  <span class="resaltado-text">{{remedio.nombre }}</span> cada
-                  <span class="resaltado-text">{{ remedio.cada }}</span> durante
-                  el periodo:
-                  <span class="resaltado-text">{{remedio.durante }}</span>
-                </h4>
-              </ion-text>
+              *ngFor="let remedio of remedios; let i = index"
+              class="post-it centrado"
+              (click)="toggleExpand(i)"
+              >
+              <div
+                class="ion-text-center"
+                [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}"
+                >
+                <h3>{{ remedio.motivo }}</h3>
+                <span>{{ remedio.nombre }}</span>
+                <ion-text>
+                  <h4 *ngIf="isExpanded[i]">
+                    Inicio tratamiento: {{ remedio.fecha }}
+                  </h4>
+                  <h4 *ngIf="isExpanded[i]">
+                    Instrucción: tomar
+                    <span class="resaltado-text">{{ remedio.cantidad }}</span> del
+                    remedio
+                    <span class="resaltado-text">{{remedio.nombre }}</span> cada
+                    <span class="resaltado-text">{{ remedio.cada }}</span> durante
+                    el periodo:
+                    <span class="resaltado-text">{{remedio.durante }}</span>
+                  </h4>
+                </ion-text>
+              </div>
             </div>
-          </div>
+          </ng-container>
         </ion-list>
         <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
           <ion-infinite-scroll-content></ion-infinite-scroll-content>

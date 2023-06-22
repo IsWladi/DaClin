@@ -95,23 +95,25 @@
       <ion-col></ion-col>
       <ion-col size="12" sizeLg="8">
         <ion-list class="animate__animated animate__shakeX">
-          <div
-            *ngFor="let cita of citas; let i = index"
-            class="post-it centrado"
-            (click)="toggleExpand(i)"
-          >
+          <ng-container *ngIf="citas !== 0">
             <div
-              class="ion-text-center"
-              [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}"
-            >
-              <h3>{{ cita.motivo }}</h3>
-              <span>{{cita.especialidad}}</span>
-              <ion-text>
-                <h4 *ngIf="isExpanded[i]">{{ cita.especialidad }}</h4>
-                <h4 *ngIf="isExpanded[i]">{{ cita.fecha }}</h4>
-              </ion-text>
+              *ngFor="let cita of citas; let i = index"
+              class="post-it centrado"
+              (click)="toggleExpand(i)"
+              >
+              <div
+                class="ion-text-center"
+                [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}"
+                >
+                <h3>{{ cita.motivo }}</h3>
+                <span>{{cita.especialidad}}</span>
+                <ion-text>
+                  <h4 *ngIf="isExpanded[i]">{{ cita.especialidad }}</h4>
+                  <h4 *ngIf="isExpanded[i]">{{ cita.fecha }}</h4>
+                </ion-text>
+              </div>
             </div>
-          </div>
+          </ng-container>
         </ion-list>
         <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
           <ion-infinite-scroll-content></ion-infinite-scroll-content>

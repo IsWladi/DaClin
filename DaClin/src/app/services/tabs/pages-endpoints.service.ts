@@ -48,20 +48,19 @@ export class PagesEndpointsService {
 
     try {
       response = await this.http.get(url).toPromise();
-      if (response == 0){
-        return 0; // usuario no encontrado
+      if ( Object.keys(response).length !== 0){
+        // Transformar los datos de respuesta en objetos Cita
+        let citas: Cita[] = response.map((item: any) => {
+          return {
+            especialidad: item.especialidad,
+            fecha:item.fecha,
+            motivo: item.motivo
+          };
+        });
+        return citas;
       }
+      return 0;
 
-      // Transformar los datos de respuesta en objetos Cita
-      let citas: Cita[] = response.map((item: any) => {
-        return {
-          especialidad: item.especialidad,
-          fecha:item.fecha,
-          motivo: item.motivo
-        };
-      });
-
-      return citas;
     } catch (error) {
       console.error('Error al obtener citas:', error);
       throw error;

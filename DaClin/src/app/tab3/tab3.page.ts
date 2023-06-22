@@ -165,7 +165,6 @@ export class Tab3Page{
            remedio.fecha = remedio.fecha.slice(0,10) + ' ' + remedio.fecha.slice(11,16);
          });
        }
-       console.log(this.remedios);
      })
      .catch(error => {
        console.error('Error al obtener remedios:', error);
