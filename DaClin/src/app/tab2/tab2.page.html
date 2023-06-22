@@ -59,12 +59,13 @@
 
                 <ion-item>
                   <ion-label position="stacked">Fecha cita:</ion-label>
-                  <input
-                    class="input-datetime"
-                    formControlName="fecha"
-                    type="datetime-local"
-                    id="cita-time"
-                  />
+                  <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime #datetime (ionChange)="dateChanged(datetime.value)" showDefaultButtons="true" id="datetime"></ion-datetime>
+                    </ng-template>
+                  </ion-modal>
                 </ion-item>
 
                 <ion-item>

@@ -58,11 +58,12 @@
                       formControlName="cantidad"
                       placeholder="ej: 1u o 15ml"
                     ></ion-input>
+
                     <ion-button color="light" id="hover-trigger-cantidad">
                       <ion-icon
                         color="dark"
                         name="information-circle-outline"
-                      ></ion-icon>
+                        ></ion-icon>
                     </ion-button>
                   </div>
                   <ion-popover
@@ -100,7 +101,6 @@
                     </ng-template>
                   </ion-popover>
                 </ion-item>
-
                 <ion-item>
                   <ion-label position="stacked">cada(horas):</ion-label>
                   <ion-input formControlName="cada" placeholder="8"></ion-input>
@@ -150,12 +150,13 @@
                 </ion-item>
                 <ion-item>
                   <ion-label position="stacked">Inicio tratamiento:</ion-label>
-                  <input
-                    class="input-datetime"
-                    formControlName="fecha"
-                    type="datetime-local"
-                    id="remedio-time"
-                  />
+                  <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime #datetime (ionChange)="dateChanged(datetime.value)" showDefaultButtons="true" id="datetime"></ion-datetime>
+                    </ng-template>
+                  </ion-modal>
                 </ion-item>
 
                 <ion-item>

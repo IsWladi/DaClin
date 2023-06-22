@@ -13,6 +13,8 @@ import {
   FormBuilder,
 } from '@angular/forms';
 
+import {format, parseISO} from 'date-fns';
+
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
@@ -29,6 +31,7 @@ export class Tab3Page{
   cantidadRegex = '^\\d+(?:mg|g|mcg|ml|L|u)$';
   duranteRegex = '^(?:\\d+\\s(?:dias|semanas|meses|años)|indefinido)$';
 
+  formattedDate: string = '';
   alertMessage: string = '';
   public alertButtons = ['OK'];
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
@@ -47,8 +50,19 @@ export class Tab3Page{
       cantidad: new FormControl('', [ Validators.required, Validators.pattern(this.cantidadRegex) ]),
       cada: new FormControl('', [ Validators.required, Validators.pattern(this.numerosRegex) ]),
       durante: new FormControl('', [ Validators.required, Validators.pattern(this.duranteRegex) ]),
-      fecha: new FormControl('', Validators.required)
     });
+    this.setToday();
+  }
+
+
+  setToday(){
+    const currentDate = new Date();
+    const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm');
+    this.formattedDate = format(parseISO(formattedDate), 'yyyy-MM-dd HH:mm');
+
+  }
+  dateChanged(date:any){
+    this.formattedDate = format(parseISO(date), 'yyyy-MM-dd HH:mm');
   }
 
   async presentAlert() {
@@ -78,9 +92,8 @@ export class Tab3Page{
     let cantidad = this.formularioRemedio.get('cantidad');
     let cada = this.formularioRemedio.get('cada');
     let durante = this.formularioRemedio.get('durante');
-    let fecha = this.formularioRemedio.get('fecha');
-
-    if (motivo?.invalid || nombre?.invalid || cantidad?.invalid || cada?.invalid || durante?.invalid || fecha?.invalid) {
+    let fecha = this.formattedDate;
+    if (motivo?.invalid || nombre?.invalid || cantidad?.invalid || cada?.invalid || durante?.invalid) {
       return false;
     } else {
       return {
@@ -89,7 +102,7 @@ export class Tab3Page{
         "cantidad":cantidad?.value,
         "cada":cada?.value,
         "durante":durante?.value,
-        "fecha":fecha?.value
+        "fecha":fecha
       };
     }
   }
