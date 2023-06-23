@@ -17,6 +17,7 @@
     <ion-row>
       <ion-col size="12">
         <ion-text color="primary">
+          <h1 *ngIf="images.length == 0">no hay imagenes</h1>
           <h1 class="ion-text-center"><b>Nuevo examen</b></h1>
         </ion-text>
       </ion-col>
@@ -59,6 +60,16 @@
             <ion-button class="full-width-button" color="tertiary"
               >Guardar examen</ion-button>
 
+          </ion-item>
+          <ion-item>
+            <ion-button class="full-width-button" color="tertiary" (click)="selectImage()"
+              >guardar imagen</ion-button>
+          </ion-item>
+
+          <ion-item *ngFor="let file of images; let i = index">
+            <ion-thumbnail slot="start">
+              <ion-img [src]="file.data"></ion-img>
+            </ion-thumbnail>
           </ion-item>
         </ion-list>
       </ion-col>
