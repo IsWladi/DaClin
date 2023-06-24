@@ -3,6 +3,7 @@ import {Camera, CameraResultType, CameraSource, Photo} from '@capacitor/camera';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { LoadingController, Platform } from '@ionic/angular';
 import { AuthService } from '../../autenticacion/auth.service';
+import { PagesEndpointsService } from '../pages-endpoints.service';
 
 interface LocalFile{
   name: string,
@@ -17,7 +18,25 @@ export class CamaraManageService {
 
   images: LocalFile[] = [];
   IMAGE_DIR = "";
-  constructor(private auth:AuthService,private platform: Platform,private loadingCtrl: LoadingController) { }
+  constructor(private auth:AuthService,private platform: Platform,private loadingCtrl: LoadingController, apiService:PagesEndpointsService) { }
+
+  async guardarExamen(nombre:string, razon:string, fecha:string, imagenPath:string): Promise<boolean>{
+    //validad campos no vacios
+    if(nombre=="" || razon=="" || fecha==""){
+      return false;
+    }
+    if(imagenPath==""){
+      imagenPath = "no_image";
+    }
+    let data = {
+      imagen: imagenPath,
+      nombre: nombre,
+      razon: razon,
+      fecha: fecha,
+    }
+    console.log(data);
+    return true;
+  }
 
   async loadFiles(): Promise<LocalFile[]> {
     this.IMAGE_DIR = "daclin_stored_images/" + this.auth.userId;
@@ -62,7 +81,7 @@ export class CamaraManageService {
     return this.images;
   }
 
-  async selectImage(){
+  async selectImage(): Promise<string>{
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: false,
@@ -70,21 +89,26 @@ export class CamaraManageService {
       source: this.platform.is('hybrid') ? CameraSource.Camera : CameraSource.Photos
     });
     if(image){
-      console.log(image);
-      this.saveImage(image);
+      let returnPath = await this.saveImage(image);
+      if (returnPath){
+        return returnPath;
+      }
+      return "";
     }
+    return "";
   }
 
-  async saveImage(photo: Photo){
+  async saveImage(photo: Photo): Promise<string>{
     const filename = new Date().getTime() + '.jpeg';
     const base64Data = await this.readAsBase64(photo);
+    const path = `${this.IMAGE_DIR}/${filename}`;
     console.log(base64Data);
     const savedFile = await Filesystem.writeFile({
       directory: Directory.Data,
-      path: `${this.IMAGE_DIR}/${filename}`,
+      path: path,
       data: base64Data
     });
-    console.log("saved file"+savedFile);
+    return path
   }
 
 private async readAsBase64(photo: Photo) {
