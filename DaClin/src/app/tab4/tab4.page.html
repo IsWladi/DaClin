@@ -59,12 +59,13 @@
             </ion-item>
 
             <ion-item id="examen">
-              <ion-text> Sacar foto: </ion-text>
+              <ion-text> Subir foto: </ion-text>
               <ion-button
                 class="full-width-button"
                 color="light"
                 (click)="seleccionarImagen()"
-                ><ion-icon name="camera-outline"></ion-icon
+                id="camara-button"
+                ><ion-icon  name="camera-outline"></ion-icon
               ></ion-button>
             </ion-item>
 
@@ -90,9 +91,19 @@
             </ion-item>
 
             <ion-item *ngIf="examenes.length != 0">
-              <div *ngFor="let file of examenes; let i = index">
-                    <ion-img *ngIf="file['imagen'] != 'null'" [src]="file['imagen']"></ion-img>
-                    <ion-img *ngIf="file['imagen'] == 'null'"></ion-img>
+              <div *ngFor="let file of examenes; let i = index" class="post-it centrado">
+
+                    <div
+                      class="ion-text-center"
+                      [ngClass]="{'animate__animated': 'animate__pulse'}"
+                      >
+                      <ion-thumbnail>
+                        <ion-img *ngIf="file['imagen'] != 'null'" [src]="file['imagen']"></ion-img>
+                        <ion-img *ngIf="file['imagen'] == 'null'"></ion-img>
+                      </ion-thumbnail>
+                      <h3>{{ file['razon'] }}</h3>
+                      <span>{{file['nombre']}}</span>
+                    </div>
               </div>
 
             </ion-item>
