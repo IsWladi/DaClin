@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PagesEndpointsService } from '../services/tabs/pages-endpoints.service';
+import { AuthService } from '../services/autenticacion/auth.service';
 
 @Component({
   selector: 'app-tab1',
@@ -8,6 +9,6 @@ import { PagesEndpointsService } from '../services/tabs/pages-endpoints.service'
 })
 export class Tab1Page {
 
-  constructor() {}
+  constructor(public auth:AuthService) {}
 
 }

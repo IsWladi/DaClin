@@ -4,7 +4,7 @@
       <span>
         <ion-button color="light" (click)="authService.closeSesion()">
           <ion-icon color="primary" name="arrow-back-circle-outline"></ion-icon>
-        <span class="hide-on-xs">Cerrar sesión</span>
+          <span class="hide-on-xs">Cerrar sesión</span>
         </ion-button>
       </span>
     </div>
@@ -21,68 +21,95 @@
         </ion-text>
       </ion-col>
       <ion-col size="12" class="centrado">
-        <ion-list>
-          <ion-item>
-            <ion-label>Razón examen:</ion-label>
-            <ion-input placeholder="dolor de muelas"></ion-input>
-          </ion-item>
+        <form
+          class="animate__animated animate__jello"
+          [formGroup]="formularioExamen"
+        >
+          <ion-list>
+            <ion-item>
+              <ion-label>Razón examen:</ion-label>
+              <ion-input
+                formControlName="razon"
+                placeholder="dolor de muelas"
+              ></ion-input>
+            </ion-item>
 
-          <ion-item>
-            <ion-label>Nombre examen:</ion-label>
-            <ion-input placeholder="panoramica"></ion-input>
-          </ion-item>
+            <ion-item>
+              <ion-label>Nombre examen:</ion-label>
+              <ion-input
+                formControlName="nombre"
+                placeholder="panoramica"
+              ></ion-input>
+            </ion-item>
 
-          <ion-item>
-            <ion-label>Fecha examen:</ion-label>
-            <ion-input>
-              <ion-datetime-button slot="end" datetime="datetime">
-              </ion-datetime-button>
-            </ion-input>
+            <ion-item>
+              <ion-label>Fecha examen:</ion-label>
+              <ion-datetime-button datetime="datetime"></ion-datetime-button>
 
-            <ion-modal [keepContentsMounted]="true">
-              <ng-template>
-                <ion-datetime id="datetime">
-                  <span slot="title">Fecha realización examen</span>
-                </ion-datetime>
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime
+                    #datetime
+                    (ionChange)="dateChanged(datetime.value)"
+                    showDefaultButtons="true"
+                    id="datetime"
+                  ></ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </ion-item>
+
+            <ion-item id="examen">
+              <ion-text> Subir foto: </ion-text>
+              <ion-button
+                class="full-width-button"
+                color="light"
+                (click)="seleccionarImagen()"
+                id="camara-button"
+                ><ion-icon  name="camera-outline"></ion-icon
+              ></ion-button>
+            </ion-item>
+
+            <ion-item>
+              <ion-button
+                class="full-width-button"
+                color="tertiary"
+                (click)="guardarExamen()"
+                *ngIf="isValidForm(); else examenButton"
+              >
+                Guardar examen
+              </ion-button>
+              <ng-template #examenButton>
+                <ion-button
+                  class="full-width-button"
+                  color="tertiary"
+                  [disabled]="true"
+                  (click)="guardarExamen()"
+                >
+                  Guardar examen
+                </ion-button>
               </ng-template>
-            </ion-modal>
-          </ion-item>
+            </ion-item>
 
-          <ion-item id="examen">
-            <ion-label>Subir examen:</ion-label>
-            <ion-input color="primary" type="file" placeholder="formato pdf o jpg"></ion-input>
+            <ion-item *ngIf="examenes.length != 0">
+              <div *ngFor="let file of examenes; let i = index" class="post-it centrado">
 
-          </ion-item>
+                    <div
+                      class="ion-text-center"
+                      [ngClass]="{'animate__animated': 'animate__pulse'}"
+                      >
+                      <ion-thumbnail>
+                        <ion-img *ngIf="file['imagen'] != 'null'" [src]="file['imagen']"></ion-img>
+                        <ion-img *ngIf="file['imagen'] == 'null'"></ion-img>
+                      </ion-thumbnail>
+                      <h3>{{ file['razon'] }}</h3>
+                      <span>{{file['nombre']}}</span>
+                    </div>
+              </div>
 
-
-          <ion-item>
-            <ion-button class="full-width-button" color="tertiary"
-              >Guardar examen</ion-button>
-
-          </ion-item>
-        </ion-list>
+            </ion-item>
+          </ion-list>
+        </form>
       </ion-col>
-
-      <!-- <ion-col size="12">
-        <ion-text color="primary">
-          <h1 class="ion-text-center"><b>Mis citas</b></h1>
-        </ion-text>
-        <ion-list>
-          <div *ngFor="let cita of citas; let i = index" class="post-it centrado" (click)="toggleExpand(i)">
-            <div class="ion-text-center" [ngClass]="{'animate__animated': isExpanded[i], 'animate__pulse': isExpanded[i]}">
-              <h3>{{ cita.motivo }}</h3>
-              <ion-text>
-                <h4 *ngIf="isExpanded[i]"> {{ cita.especialidad }}</h4>
-                <h4 *ngIf="isExpanded[i]"> {{ cita.fecha }}</h4>
-                <h4 *ngIf="isExpanded[i]"> {{ cita.hora }}hrs</h4>
-              </ion-text>
-            </div>
-          </div>
-        </ion-list>
-        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-          <ion-infinite-scroll-content></ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </ion-col> -->
     </ion-row>
   </ion-grid>
 </ion-content>

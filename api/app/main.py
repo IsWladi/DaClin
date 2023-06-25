@@ -30,6 +30,12 @@ class Remedio(BaseModel):
     durante: str
     fecha: str
 
+class Examen(BaseModel):
+    nombre: str
+    razon: str
+    fecha: str
+    imagen: str
+
 
 app = FastAPI()
 
@@ -164,6 +170,38 @@ async def obtener_remedios_usuario(user_id: str):
                                          "remedios": True, "_id": False})
     if remedios:
         return json.loads(dumps(remedios["remedios"]))
+    else:
+        return "No document found"
+
+
+# crear nuevo examen
+@app.post("/api/examenes/agregar/{user_id}", status_code=201)
+async def agregar_examen(examen: Examen, user_id: str):
+    usuario = usuarios_collection.find_one({"_id": ObjectId(user_id)})
+    if usuario:
+        # Obtenemos la lista de citas existentes o una lista vacía
+        examenes = usuario.get("examenes", [])
+        for ex in examenes:
+            if examen.nombre == ex["nombre"]:
+                return {"message": "Examen no creado, razon debe ser unico"}
+
+        # si el motivo no existe se crea la nueva cita en la bd
+        examenes.append(examen.dict())
+        usuarios_collection.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"examenes": examenes}}
+        )
+        return {"message": "Examen agregado exitosamente"}
+    else:
+        return {"message": "Usuario no encontrado"}
+
+# obtener examenes de un usuario
+@app.get("/api/examenes/usuario/{user_id}", status_code=200)
+async def obtener_examenes_usuario(user_id: str):
+    examenes = usuarios_collection.find_one({"_id": ObjectId(user_id)}, {
+                                         "examenes": True, "_id": False})
+    if examenes:
+        return json.loads(dumps(examenes["examenes"]))
     else:
         return "No document found"
 
