@@ -73,6 +73,11 @@ async def get_user(setting: str):
         usuario = usuarios_collection.find_one({"username": setting})
         return json.loads(dumps(usuario))
 
+@app.get("/api/users/get/username/{id}")
+async def get_user(id: str):
+    usuario = usuarios_collection.find_one({"_id": ObjectId(id)},{"username":True})
+    return json.loads(dumps(usuario["username"]))
+
 # post para crear un usuario
 
 
