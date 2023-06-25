@@ -3,6 +3,7 @@ import { AuthService } from '../services/autenticacion/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../model/users';
 import { AlertController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 import {
   FormGroup,
   FormControl,
@@ -25,6 +26,7 @@ export class RegisterPage implements OnInit {
   passwordRegex = '[a-zA-Z1-9\\W_]{6,}';
 
   constructor(
+    private loadingController: LoadingController,
     public fb: FormBuilder,
     private apiService: AuthService,
     private router: Router,
@@ -88,11 +90,17 @@ export class RegisterPage implements OnInit {
     }
   }
   async register() {
+    const loading = await this.loadingController.create({
+      message: 'Registrando usuario...', // Mensaje que se mostrará en el indicador de carga
+      spinner: 'dots', // Estilo del spinner de carga
+      translucent: true, // Permite que el fondo sea translúcido
+    });
     try {
       let username = this.formularioRegister.get('nombre')?.value;
       let password = this.formularioRegister.get('password')?.value;
       let password2 = this.formularioRegister.get('password2')?.value;
       let result: any = '';
+      await loading.present(); // Muestra el indicador de carga
       // registrar al usuario si las contraseñas son iguales
       if (password == password2) {
         result = await this.apiService.registrarUsuario(username, password);
@@ -113,7 +121,9 @@ export class RegisterPage implements OnInit {
       this.alertMessage = 'Error al registrar usuario';
       this.showAlert = true;
       this.presentAlert();
-    }
+    } finally {
+    await loading.dismiss(); // Cierra el indicador de carga
+  }
   }
 
   async presentAlert() {

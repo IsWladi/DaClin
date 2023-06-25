@@ -10,6 +10,17 @@ export class AuthService {
   endPointBase = "https://daclinapi-1-f4557501.deta.app/"
 
   constructor(private http: HttpClient, private router:Router) { }
+  //obtener username
+  async getUsername() {
+    const url = this.endPointBase+'api/users/get/username/' + this.getUserId();
+    try {
+      const response = await this.http.get(url).toPromise();
+      return response;
+    } catch (error) {
+      console.error('Error al obtener username:', error);
+      throw error;
+    }
+  }
 
   // registrar usuario
   async registrarUsuario(usuario: string, contrasena: string) {
@@ -65,7 +76,7 @@ async loginUsuario(usuario: string, contrasena: string, saveConnection: boolean)
   closeSesion(){
     this.userId = ""
     localStorage.removeItem('userId');
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   isLoggedIn(){
