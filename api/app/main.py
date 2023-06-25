@@ -195,6 +195,16 @@ async def agregar_examen(examen: Examen, user_id: str):
     else:
         return {"message": "Usuario no encontrado"}
 
+# obtener examenes de un usuario
+@app.get("/api/examenes/usuario/{user_id}", status_code=200)
+async def obtener_examenes_usuario(user_id: str):
+    examenes = usuarios_collection.find_one({"_id": ObjectId(user_id)}, {
+                                         "examenes": True, "_id": False})
+    if examenes:
+        return json.loads(dumps(examenes["examenes"]))
+    else:
+        return "No document found"
+
 
 @app.get("/")
 async def root():

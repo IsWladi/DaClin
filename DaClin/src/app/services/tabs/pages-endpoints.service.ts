@@ -4,6 +4,7 @@ import { AuthService } from '../autenticacion//auth.service';
 import { map } from 'rxjs/operators';
 import { Cita } from '../../model/citas';
 import { Remedio } from 'src/app/model/remedios';
+import { Examen } from 'src/app/model/examenes';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,36 @@ export class PagesEndpointsService {
       return 1;
     } catch (error) {
       console.error('Error al crear nuevo examen:', error);
+      throw error;
+    }
+  }
+
+  async getExamenes() {
+    let response:any = {};
+    let user = this.auth.getUserId();
+    if (user == "") {
+      return 404;
+    }
+    const url = this.auth.endPointBase+'api/examenes/usuario/'+user;
+
+    try {
+      response = await this.http.get(url).toPromise();
+      if ( Object.keys(response).length !== 0){
+        // Transformar los datos de respuesta en objetos Examen
+        let examenes: Examen[] = response.map((item: any) => {
+          return {
+            nombre: item.nombre,
+            razon: item.razon,
+            fecha: item.fecha,
+            imagen: item.imagen
+          };
+        });
+        return examenes;
+      }
+      return 0;
+
+    } catch (error) {
+      console.error('Error al obtener examenes:', error);
       throw error;
     }
   }
