@@ -36,7 +36,7 @@ export class CamaraManageService {
   }
 
 async getImage(image:Photo):Promise<string> {
-  return await this.readAsBase64(image);
+  return this.readAsBase64(image)
 }
 
 private async readAsBase64(photo: Photo) {

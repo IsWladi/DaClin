@@ -54,7 +54,8 @@ export class Tab4Page implements OnInit {
 
    async ionViewDidEnter() {
      this.resetForm(); // ocultar formulario
-    this.examenes = await this.apiService.getExamenes();
+     this.examenes = await this.apiService.getExamenes();
+
   }
 
   async presentAlert() {
@@ -89,6 +90,10 @@ export class Tab4Page implements OnInit {
       this.presentAlert(); // Llama al método para mostrar la alerta
       this.limpiarForm();
       this.resetForm();
+      //se agregan los datos a la lista de examenes de manera manual para actualizar la vista
+      if (!Array.isArray(this.examenes)) {
+        this.examenes = []; // Inicializa _this4.examenes como un array vacío si no lo es
+      }
       this.examenes.push(artificialAdd); // para actualizar la lista de examenes en la vista
     }
   }
