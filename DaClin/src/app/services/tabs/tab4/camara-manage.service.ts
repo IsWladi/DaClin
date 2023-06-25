@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Camera, CameraResultType, CameraSource, Photo} from '@capacitor/camera';
-import { Filesystem, Directory } from '@capacitor/filesystem';
 import { LoadingController, Platform } from '@ionic/angular';
 import { AuthService } from '../../autenticacion/auth.service';
 import { PagesEndpointsService } from '../pages-endpoints.service';
@@ -32,7 +31,7 @@ export class CamaraManageService {
       quality: 100,
       allowEditing: false,
       resultType: CameraResultType.Uri,
-      source: this.platform.is('hybrid') ? CameraSource.Camera : CameraSource.Photos
+      source: CameraSource.Photos
     });
   }
 
@@ -41,6 +40,7 @@ async getImage(image:Photo):Promise<string> {
 }
 
 private async readAsBase64(photo: Photo) {
+  // "hybrid" will detect Cordova or Capacitor
     // Fetch the photo, read as a blob, then convert to base64 format
     const response = await fetch(photo.webPath!);
     const blob = await response.blob();
