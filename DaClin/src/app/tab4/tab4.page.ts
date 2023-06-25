@@ -27,7 +27,7 @@ interface LocalFile{
   styleUrls: ['./tab4.page.scss'],
 })
 export class Tab4Page implements OnInit {
-  images: LocalFile[] = [];
+  images: any = "";
   imageLoaded: boolean = false;
   imagePath: string = '';
   formularioExamen: FormGroup;
@@ -37,8 +37,11 @@ export class Tab4Page implements OnInit {
   // para fecha
   formattedDate: string = '';
 
-  constructor(public camaraManage: CamaraManageService,public authService: AuthService, public fb: FormBuilder, private alertController: AlertController) {
+  alertMessage: string = '';
+  public alertButtons = ['OK'];
+  showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
 
+  constructor(public camaraManage: CamaraManageService,public authService: AuthService, public fb: FormBuilder, private alertController: AlertController) {
     this.formularioExamen = this.fb.group({
       nombre: new FormControl('', [
         Validators.required,
@@ -48,16 +51,50 @@ export class Tab4Page implements OnInit {
     });
     this.setToday();
   }
+  async getLoadFiles(){
+    this.images = await this.camaraManage.loadFiles();
+    console.log(this.images);
+  }
+
+
+   ionViewDidEnter() {
+     this.resetForm(); // ocultar formulario
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'aviso',
+      subHeader: '',
+      message: this.alertMessage,
+      buttons: ['OK'],
+      cssClass: 'animate__animated animate__heartBeat', // agrega las clases de animate.css para animar la alerta
+    });
+
+    await alert.present();
+  }
 
   async seleccionarImagen(){
-    this.imagePath = await this.camaraManage.selectImage();
+    let filename = new Date().getTime() + '.jpeg';
+    let path = `${this.camaraManage.IMAGE_DIR}/${filename}`;
+    this.imagePath = path;
+    await this.camaraManage.selectImage();
   }
 
 
   async guardarExamen(){
     let examenForm = this.getExamenForm();
     if(examenForm != false){
-      let response = this.camaraManage.guardarExamen(examenForm["nombre"], examenForm["razon"], examenForm["fecha"], examenForm["imagen"]);
+      let response = await this.camaraManage.guardarExamen(examenForm["nombre"], examenForm["razon"], examenForm["fecha"], examenForm["imagen"]);
+      if(response!=false){
+        this.alertMessage = 'Examen creado exitosamente';
+        this.showAlert = true; // Actualiza la variable para mostrar la alerta
+        this.presentAlert(); // Llama al método para mostrar la alerta
+        this.limpiarForm();
+        this.resetForm();
+        this.ionViewDidEnter(); // actualizar lista
+
+      }
+      console.log(response);
     }
   }
 
@@ -82,10 +119,7 @@ export class Tab4Page implements OnInit {
     let nombre = this.formularioExamen.get('nombre');
     let razon = this.formularioExamen.get('razon');
     let fecha = this.formattedDate;
-    let imagen = "";
-    if (this.imagePath != ""){
-      imagen = this.imagePath;
-    }
+    let imagen = this.imagePath;
 
     if (nombre?.invalid || razon?.invalid) {
       return false;
@@ -118,7 +152,7 @@ export class Tab4Page implements OnInit {
   }
 
   async ngOnInit() {
-    this.images = await this.camaraManage.loadFiles();
+    this.getLoadFiles();
   }
 
 }

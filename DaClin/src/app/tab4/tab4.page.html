@@ -63,7 +63,7 @@
           </ion-item>
 
           <ion-item *ngIf="images.length != 0">
-            <div *ngFor="let file of images; let i = index">
+            <div *ngFor="let file of images.data; let i = index">
                 <ion-thumbnail slot="start">
                   <ion-img [src]="file.data"></ion-img>
                 </ion-thumbnail>
