@@ -41,17 +41,21 @@ async loginUsuario(usuario: string, contrasena: string, saveConnection: boolean)
   try {
     const response = await this.http.post(url, body).toPromise();
     if (response !== undefined) {
-      if (saveConnection) {
-        localStorage.setItem('userId', response.toString());
-      }
-      else{
-        this.userId = response.toString();
-      }
-    } else {
+      // Resto del código...
+      if (response?.toString() !== "false") {
+        if (saveConnection) {
+          localStorage.setItem('userId', response?.toString());
+        }
+        else{
+          this.userId = response?.toString();
+        }
+      } else {
       // Lógica para manejar el caso en que la respuesta sea undefined
       this.userId = '';
-    }
+      }
     return response; // Devuelve la respuesta obtenida desde el backend
+    }
+    return false;
   } catch (error) {
     console.error('Error al loguear usuario:', error);
     throw error; // Relanza el error para manejarlo en la función `login()`
