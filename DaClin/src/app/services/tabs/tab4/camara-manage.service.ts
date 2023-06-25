@@ -41,22 +41,11 @@ async getImage(image:Photo):Promise<string> {
 }
 
 private async readAsBase64(photo: Photo) {
-  // "hybrid" will detect Cordova or Capacitor
-  if (this.platform.is('hybrid')) {
-    // Read the file into base64 format
-    const file = await Filesystem.readFile({
-      path: photo.path!
-    });
-
-    return file.data;
-  }
-  else {
     // Fetch the photo, read as a blob, then convert to base64 format
     const response = await fetch(photo.webPath!);
     const blob = await response.blob();
 
     return await this.convertBlobToBase64(blob) as string;
-  }
 }
 
 private convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {

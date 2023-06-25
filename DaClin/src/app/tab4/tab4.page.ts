@@ -5,7 +5,7 @@ import { PagesEndpointsService } from '../services/tabs/pages-endpoints.service'
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import {format, parseISO} from 'date-fns';
-
+import { Examen } from 'src/app/model/examenes';
 
 import {
   FormGroup,
@@ -77,13 +77,19 @@ export class Tab4Page implements OnInit {
   async guardarExamen(){
     let examenForm = await this.getExamenForm();
     let response = await this.camaraManage.guardarExamen(examenForm["nombre"], examenForm["razon"], examenForm["fecha"], examenForm["imagen"]);
+    let artificialAdd:Examen = {
+      nombre: examenForm["nombre"],
+      razon: examenForm["razon"],
+      fecha: examenForm["fecha"],
+      imagen: examenForm["imagen"]
+    }
     if(response!=false){
       this.alertMessage = 'Examen creado exitosamente';
       this.showAlert = true; // Actualiza la variable para mostrar la alerta
       this.presentAlert(); // Llama al método para mostrar la alerta
       this.limpiarForm();
       this.resetForm();
-      this.examenes = await this.apiService.getExamenes();
+      this.examenes.push(artificialAdd); // para actualizar la lista de examenes en la vista
     }
   }
 
