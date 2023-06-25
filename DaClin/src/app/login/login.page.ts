@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/autenticacion/auth.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 import {
   FormGroup,
   FormControl,
@@ -24,6 +25,7 @@ export class LoginPage implements OnInit {
   usernameRegex = '[a-zA-Z0-9]{3,}';
 
   constructor(
+    private loadingController: LoadingController,
     private apiService: AuthService,
     private router: Router,
     private alertController: AlertController,
@@ -72,13 +74,22 @@ export class LoginPage implements OnInit {
     }
   }
   async login() {
+    const loading = await this.loadingController.create({
+      message: 'Iniciando sesión...', // Mensaje que se mostrará en el indicador de carga
+      spinner: 'dots', // Estilo del spinner de carga
+      translucent: true, // Permite que el fondo sea translúcido
+    });
+
     try {
       let username = this.formularioLogin.get('nombre')?.value;
       let password = this.formularioLogin.get('password')?.value;
       let saveConnection = this.formularioLogin.get('saveConnection')?.value;
 
+      await loading.present(); // Muestra el indicador de carga
+
       const user = await this.apiService.loginUsuario(username, password, saveConnection);
       if (user) {
+        this.limpiarForm();
         this.router.navigate(['/tabs/tabs/tab1']);
       } else {
         this.alertMessage = 'Usuario o contraseña incorrecta';
@@ -90,7 +101,12 @@ export class LoginPage implements OnInit {
       this.alertMessage = 'Error al iniciar sesión';
       this.showAlert = true; // Actualiza la variable para mostrar la alerta
       this.presentAlert(); // Llama al método para mostrar la alerta
-    }
+    } finally {
+    await loading.dismiss(); // Cierra el indicador de carga
+  }
+  }
+  limpiarForm(){
+    this.formularioLogin.reset();
   }
 
   async presentAlert() {

@@ -3,6 +3,8 @@ import {HttpClient} from "@angular/common/http";
 import { AuthService } from '../autenticacion//auth.service';
 import { map } from 'rxjs/operators';
 import { Cita } from '../../model/citas';
+import { Remedio } from 'src/app/model/remedios';
+import { Examen } from 'src/app/model/examenes';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +12,63 @@ import { Cita } from '../../model/citas';
 export class PagesEndpointsService {
 
   constructor(private http: HttpClient, private auth:AuthService) { }
+
+  async crearExamen(examenData: any) {
+    let response:any = {};
+    let user = this.auth.getUserId();
+    if (user == "") {
+      return 404;
+    }
+    const url = this.auth.endPointBase+'api/examenes/agregar/'+user;
+
+    const body = {
+      nombre: examenData.nombre,
+      razon: examenData.razon,
+      fecha: examenData.fecha,
+      imagen: examenData.imagen
+    };
+
+    try {
+      response = await this.http.post(url, body).toPromise();
+      if (response["message"] == "Examen no creado, razon debe ser unico" ){
+        return 0;
+      }
+      return 1;
+    } catch (error) {
+      console.error('Error al crear nuevo examen:', error);
+      throw error;
+    }
+  }
+
+  async getExamenes() {
+    let response:any = {};
+    let user = this.auth.getUserId();
+    if (user == "") {
+      return 404;
+    }
+    const url = this.auth.endPointBase+'api/examenes/usuario/'+user;
+
+    try {
+      response = await this.http.get(url).toPromise();
+      if ( Object.keys(response).length !== 0){
+        // Transformar los datos de respuesta en objetos Examen
+        let examenes: Examen[] = response.map((item: any) => {
+          return {
+            nombre: item.nombre,
+            razon: item.razon,
+            fecha: item.fecha,
+            imagen: item.imagen
+          };
+        });
+        return examenes;
+      }
+      return 0;
+
+    } catch (error) {
+      console.error('Error al obtener examenes:', error);
+      throw error;
+    }
+  }
 
   async crearCita(motivo: string, especialidad: string, fecha: string) {
     let response:any = {};
@@ -37,6 +96,35 @@ export class PagesEndpointsService {
     }
   }
 
+  async getCitas() {
+    let response:any = {};
+    let user = this.auth.getUserId();
+    if (user == "") {
+      return 404;
+    }
+    const url = this.auth.endPointBase+'api/citas/usuario/'+user;
+
+    try {
+      response = await this.http.get(url).toPromise();
+      if ( Object.keys(response).length !== 0){
+        // Transformar los datos de respuesta en objetos Cita
+        let citas: Cita[] = response.map((item: any) => {
+          return {
+            especialidad: item.especialidad,
+            fecha:item.fecha,
+            motivo: item.motivo
+          };
+        });
+        return citas;
+      }
+      return 0;
+
+    } catch (error) {
+      console.error('Error al obtener citas:', error);
+      throw error;
+    }
+  }
+
   async crearRemedio(motivo: string, nombre: string, cantidad: string, cada: string, durante:string, fecha: string) {
     let response:any = {};
     let user = this.auth.getUserId();
@@ -44,7 +132,7 @@ export class PagesEndpointsService {
       return 404;
     }
     const url = this.auth.endPointBase+'api/remedios/agregar/'+user;
-
+    cada = cada + " horas";
     const body = {
       motivo: motivo,
       nombre: nombre,
@@ -66,33 +154,36 @@ export class PagesEndpointsService {
     }
   }
 
-  async getCitas() {
+
+  async getRemedios() {
     let response:any = {};
     let user = this.auth.getUserId();
     if (user == "") {
       return 404;
     }
-    const url = this.auth.endPointBase+'api/citas/usuario/'+user;
-
+    const url = this.auth.endPointBase+'api/remedios/usuario/'+user;
     try {
       response = await this.http.get(url).toPromise();
       if (response == 0){
         return 0; // usuario no encontrado
       }
 
-      // Transformar los datos de respuesta en objetos Cita
-      let citas: Cita[] = response.map((item: any) => {
+      // Transformar los datos de respuesta en objetos Remedio
+      let remedios: Remedio[] = response.map((item: any) => {
         return {
-          especialidad: item.especialidad,
-          fecha:item.fecha,
-          motivo: item.motivo
+          motivo: item.motivo,
+          nombre: item.nombre,
+          cantidad: item.cantidad,
+          cada: item.cada,
+          durante: item.durante,
+          fecha: item.fecha
         };
       });
-
-      return citas;
+      return remedios;
     } catch (error) {
-      console.error('Error al obtener citas:', error);
+      console.error('Error al obtener remedios:', error);
       throw error;
     }
   }
+
 }

@@ -27,6 +27,17 @@
 
 /* background-image: linear-gradient(to right top, #ffffff, #e5e7ff, #c1d1ff, #8fbeff, #34aeff); */
 
+.small-icon-button {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px; /* Ajusta el margen según sea necesario */
+  font-size: 14px; /* Ajusta el tamaño de fuente según sea necesario */
+}
+
+.resaltado-text{
+  color: #34aeff;
+  font-weight: bold;
+}
 ion-content {
   // --background: linear-gradient(to right top, #ffffff, #e5e7ff, #c1d1ff, #8fbeff, #34aeff);
   --background: linear-gradient(to right top, #ffffff, #fbfcff, #f6f9ff, #eef7ff, #e6f5fe);
@@ -62,6 +73,7 @@ ion-content {
   font-size: 12px;
   color: red;
 }
+
 .input-datetime {
   background: #00C9A7;
   color: black;

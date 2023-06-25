@@ -10,6 +10,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
+import {format, parseISO} from 'date-fns';
 
 @Component({
   selector: 'app-tab2',
@@ -20,8 +21,11 @@ export class Tab2Page{
   citas: any = [];
   isExpanded: boolean[] = [];
   formularioCita: FormGroup;
+  isNewForm: boolean = false;
   motivoRegex = '[a-zA-Z0-9 ]{4,}';
   especialidadRegex = '[a-zA-Z ]{4,}';
+  // para fecha
+  formattedDate: string = '';
 
   alertMessage: string = '';
   public alertButtons = ['OK'];
@@ -35,8 +39,19 @@ export class Tab2Page{
         Validators.pattern(this.motivoRegex),
       ]),
       especialidad: new FormControl('', [ Validators.required, Validators.pattern(this.especialidadRegex) ]),
-      fecha: new FormControl('', Validators.required)
     });
+    this.setToday();
+  }
+
+  setToday(){
+    const currentDate = new Date();
+    const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm');
+    this.formattedDate = format(parseISO(formattedDate), 'yyyy-MM-dd HH:mm');
+
+  }
+
+  dateChanged(date:any){
+    this.formattedDate = format(parseISO(date), 'yyyy-MM-dd HH:mm');
   }
 
 
@@ -53,6 +68,13 @@ export class Tab2Page{
   }
 
   // para habilitar o desabilitar boton del formulario
+  createForm(){
+    this.isNewForm = true;
+  }
+  resetForm(){
+    this.isNewForm = false;
+  }
+
   isValidForm() {
     let isValid = this.formularioCita.valid;
     if (isValid) {
@@ -65,22 +87,23 @@ export class Tab2Page{
   getCitaForm() {
     let motivo = this.formularioCita.get('motivo');
     let especialidad = this.formularioCita.get('especialidad');
-    let fecha = this.formularioCita.get('fecha');
+    let fecha = this.formattedDate;
 
-    if (motivo?.invalid || especialidad?.invalid || fecha?.invalid) {
+    if (motivo?.invalid || especialidad?.invalid) {
       return false;
     } else {
       return {
         "motivo":motivo?.value,
         "especialidad":especialidad?.value,
-        "fecha":fecha?.value
+        "fecha":fecha
       };
     }
   }
   limpiarForm(){
     this.formularioCita.get('motivo')?.reset();
     this.formularioCita.get('especialidad')?.reset();
-    this.formularioCita.get('fecha')?.reset();
+    this.setToday();
+    this.resetForm();
   }
 
   async guardarCita(){
@@ -113,6 +136,9 @@ export class Tab2Page{
   }
 
    ionViewDidEnter() {
+     // hacer que las cards esten contraidas
+     this.isExpanded = [];
+     this.resetForm(); // ocultar formulario
      this.apiService.getCitas()
      .then(citas => {
        this.citas = citas;
@@ -127,7 +153,6 @@ export class Tab2Page{
            cita.fecha = cita.fecha.slice(0,10) + ' ' + cita.fecha.slice(11,16);
          });
        }
-       console.log(this.citas);
      })
      .catch(error => {
        console.error('Error al obtener citas:', error);

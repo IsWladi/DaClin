@@ -13,21 +13,25 @@ import {
   FormBuilder,
 } from '@angular/forms';
 
+import {format, parseISO} from 'date-fns';
+
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page{
-  remedios: Remedio[] = [];
+  remedios: any = [];
   isExpanded: boolean[] = [];
   formularioRemedio: FormGroup;
+  isNewForm: boolean = false;
   motivoRegex = '[a-zA-Z0-9 ]{4,}';
   especialidadRegex = '[a-zA-Z ]{4,}';
   numerosRegex = '[0-9]{1,}';
   cantidadRegex = '^\\d+(?:mg|g|mcg|ml|L|u)$';
-  duranteRegex = '^(?:\\d+\\s(?:dias|meses|años)|indefinido)$';
+  duranteRegex = '^(?:\\d+\\s(?:dias|semanas|meses|años)|indefinido)$';
 
+  formattedDate: string = '';
   alertMessage: string = '';
   public alertButtons = ['OK'];
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
@@ -46,8 +50,19 @@ export class Tab3Page{
       cantidad: new FormControl('', [ Validators.required, Validators.pattern(this.cantidadRegex) ]),
       cada: new FormControl('', [ Validators.required, Validators.pattern(this.numerosRegex) ]),
       durante: new FormControl('', [ Validators.required, Validators.pattern(this.duranteRegex) ]),
-      fecha: new FormControl('', Validators.required)
     });
+    this.setToday();
+  }
+
+
+  setToday(){
+    const currentDate = new Date();
+    const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm');
+    this.formattedDate = format(parseISO(formattedDate), 'yyyy-MM-dd HH:mm');
+
+  }
+  dateChanged(date:any){
+    this.formattedDate = format(parseISO(date), 'yyyy-MM-dd HH:mm');
   }
 
   async presentAlert() {
@@ -63,15 +78,22 @@ export class Tab3Page{
   }
 
 
+  // para habilitar o desabilitar boton del formulario
+  createForm(){
+    this.isNewForm = true;
+  }
+  resetForm(){
+    this.isNewForm = false;
+  }
+
   getRemedioForm() {
     let motivo = this.formularioRemedio.get('motivo');
     let nombre = this.formularioRemedio.get('nombre');
     let cantidad = this.formularioRemedio.get('cantidad');
     let cada = this.formularioRemedio.get('cada');
     let durante = this.formularioRemedio.get('durante');
-    let fecha = this.formularioRemedio.get('fecha');
-
-    if (motivo?.invalid || nombre?.invalid || cantidad?.invalid || cada?.invalid || durante?.invalid || fecha?.invalid) {
+    let fecha = this.formattedDate;
+    if (motivo?.invalid || nombre?.invalid || cantidad?.invalid || cada?.invalid || durante?.invalid) {
       return false;
     } else {
       return {
@@ -80,7 +102,7 @@ export class Tab3Page{
         "cantidad":cantidad?.value,
         "cada":cada?.value,
         "durante":durante?.value,
-        "fecha":fecha?.value
+        "fecha":fecha
       };
     }
   }
@@ -105,6 +127,7 @@ export class Tab3Page{
     this.formularioRemedio.get('cada')?.reset();
     this.formularioRemedio.get('durante')?.reset();
     this.formularioRemedio.get('fecha')?.reset();
+    this.resetForm();
   }
 
 
@@ -117,7 +140,7 @@ export class Tab3Page{
         this.showAlert = true; // Actualiza la variable para mostrar la alerta
         this.presentAlert(); // Llama al método para mostrar la alerta
         this.limpiarForm();
-        // this.ionViewDidEnter(); // actualizar lista
+        this.ionViewDidEnter(); // actualizar lista
       }
       else if(response == 0){
         this.alertMessage = 'Remedio no creado, el remedio debe ser unico';
@@ -133,24 +156,41 @@ export class Tab3Page{
 
   }
 
-  // toggleExpand(index: number) {
-  //   this.isExpanded[index] = !this.isExpanded[index];
-  // }
+   toggleExpand(index: number) {
+     this.isExpanded[index] = !this.isExpanded[index];
+   }
 
-  // ionViewDidEnter() {
-    // this.remedios = this.apiService.getRemedios();
-    // hacer que this.remedios[i].nombre sea la primera letra en mayúscula
-    // this.remedios.forEach(remedio => {
-    //   remedio.remedio = remedio.remedio[0].toUpperCase() + remedio.remedio.slice(1);
-    // });
-  // }
+   ionViewDidEnter() {
+     // hacer que las cards esten contraidas
+     this.isExpanded = [];
+     this.resetForm(); // ocultar formulario
+     this.apiService.getRemedios()
+     .then(medicamentos => {
+       this.remedios = medicamentos;
+       // hacer que this.remedios[i].motivo sea la primera letra en mayúscula
+       if(this.remedios != 0 && this.remedios != 404){
+         this.remedios.forEach((remedio:Remedio) => {
+           remedio.motivo = remedio.motivo[0].toUpperCase() + remedio.motivo.slice(1);
+           remedio.nombre = remedio.nombre[0].toUpperCase() + remedio.nombre.slice(1);
+         });
+         // formatear fecha
+         this.remedios.forEach((remedio:Remedio) => {
+           remedio.fecha = remedio.fecha.slice(0,10) + ' ' + remedio.fecha.slice(11,16);
+         });
+       }
+     })
+     .catch(error => {
+       console.error('Error al obtener remedios:', error);
+     });
+
+  }
 
 
-  // onIonInfinite(ev: any) {
-  //   this.remedios;
-  //   setTimeout(() => {
-  //     (ev as InfiniteScrollCustomEvent).target.complete();
-  //   }, 500);
-  // }
+  onIonInfinite(ev: any) {
+    this.remedios;
+    setTimeout(() => {
+      (ev as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
+  }
 
 }
