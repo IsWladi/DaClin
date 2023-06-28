@@ -40,7 +40,7 @@ export class Tab4Page implements OnInit {
   public alertButtons = ['OK'];
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
 
-  constructor(private apiService:PagesEndpointsService,public camaraManage: CamaraManageService,public authService: AuthService, public fb: FormBuilder, private alertController: AlertController) {
+  constructor(public apiService:PagesEndpointsService,public camaraManage: CamaraManageService,public authService: AuthService, public fb: FormBuilder, private alertController: AlertController) {
     this.formularioExamen = this.fb.group({
       nombre: new FormControl('', [
         Validators.required,
@@ -54,6 +54,7 @@ export class Tab4Page implements OnInit {
 
    async ionViewDidEnter() {
      this.resetForm(); // ocultar formulario
+     this.examenes = this.apiService.examenes;
      this.examenes = await this.apiService.getExamenes();
 
   }
@@ -148,6 +149,13 @@ export class Tab4Page implements OnInit {
   }
 
   async ngOnInit() {
+  }
+
+  onIonInfinite(ev: any) {
+    this.examenes;
+    setTimeout(() => {
+      (ev as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
   }
 
 }

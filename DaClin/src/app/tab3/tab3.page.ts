@@ -36,7 +36,7 @@ export class Tab3Page{
   public alertButtons = ['OK'];
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
 
-  constructor(private alertController: AlertController,private apiService: PagesEndpointsService, public authService: AuthService,public fb: FormBuilder) {
+  constructor(private alertController: AlertController,public apiService: PagesEndpointsService, public authService: AuthService,public fb: FormBuilder) {
       // this.isExpanded = this.remedios.map(() => false);
     this.formularioRemedio = this.fb.group({
       motivo: new FormControl('', [
@@ -164,6 +164,7 @@ export class Tab3Page{
      // hacer que las cards esten contraidas
      this.isExpanded = [];
      this.resetForm(); // ocultar formulario
+     this.remedios = this.apiService.remedios;
      this.apiService.getRemedios()
      .then(medicamentos => {
        this.remedios = medicamentos;
