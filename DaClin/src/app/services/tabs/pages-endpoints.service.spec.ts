@@ -16,4 +16,11 @@ describe('PagesEndpointsService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+  it("close session", () => {
+    service.auth.userId = "123456"
+    localStorage.setItem('userId', "123456");
+    service.closeSesion(true);
+    expect(service.auth.userId).toEqual("");
+    expect(localStorage.getItem('userId')).toBeNull();
+  });
 });

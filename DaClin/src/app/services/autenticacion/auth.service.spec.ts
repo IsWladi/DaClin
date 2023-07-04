@@ -17,4 +17,17 @@ describe('AuthService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('detect if user is logged in', () => {
+    // set the user id in local storage
+    localStorage.setItem('userId', '1');
+    expect(service.isLoggedIn()).toBeTrue();
+    // remove the user id from local storage
+    localStorage.removeItem('userId');
+  });
+
+  it('get user id', () => {
+    service.userId = '1';
+    expect(service.getUserId()).toBe('1');
+  });
 });
