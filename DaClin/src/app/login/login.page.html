@@ -14,20 +14,20 @@
           <form [formGroup]="formularioLogin">
             <ion-item>
               <ion-label position="floating">Nombre</ion-label>
-              <ion-input formControlName="nombre"></ion-input>
+              <ion-input id="inp-username" formControlName="nombre"></ion-input>
               <div *ngIf="errorNombre()" class="input-error">
                 Nombre requerido, minimo 3 caracteres, solo alfanumericos.
               </div>
             </ion-item>
             <ion-item>
               <ion-label position="floating">Contraseña</ion-label>
-              <ion-input formControlName="password" type="password"></ion-input>
+              <ion-input id="inp-password" formControlName="password" type="password"></ion-input>
               <div *ngIf="errorPass()" class="input-error">
                 Contraseña obligatoria
               </div>
             </ion-item>
             <ion-item>
-              <ion-checkbox formControlName="saveConnection" slot="start"></ion-checkbox>
+              <ion-checkbox id="chbx-save" formControlName="saveConnection" slot="start"></ion-checkbox>
               <ion-label>¿Desea mantenerse conectado?</ion-label>
             </ion-item>
           </form>
@@ -35,6 +35,7 @@
             <a [routerLink]="['/register']">¿No tienes una cuenta?</a>
           </div>
           <ion-button
+            id="btn-login"
             class="full-width-button"
             color="primary"
             (click)="login()"
