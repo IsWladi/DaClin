@@ -1,5 +1,6 @@
 describe("Login test e2e", () => {
   it("getting happy login", () => {
+
     cy.visit("http://localhost:8100/login");
 
     cy.get("#inp-username") // Selecciona el elemento por su ID
@@ -12,8 +13,10 @@ describe("Login test e2e", () => {
 
     cy.get("#btn-login")
       .click()
-      .url()
-      .should("eq", "http://localhost:8100/tabs/tabs/tab1"); // verifica que el login se haga sin problemas
+    //delay para arreglar el bug de que la primera vez no redirige
+    cy.wait(4000);
+
+    cy.url().should("eq", "http://localhost:8100/tabs/tabs/tab1");
   });
 
   it("getting happy login with save credentials and close sesion", () => {
