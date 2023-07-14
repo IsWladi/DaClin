@@ -22,7 +22,7 @@ export class LoadingAdminPage implements OnInit {
         this.message = "Saludos :D";
       }
       else if ( this.progress>0.4 && auth.isLoggedIn() == true){
-        this.message = "Saludos, "+this.usuario+" :)";
+        this.message = "Saludos "+this.usuario+" :)";
         }
       if( this.progress >1 && auth.isLoggedIn() == true){
         this.stopInterval();

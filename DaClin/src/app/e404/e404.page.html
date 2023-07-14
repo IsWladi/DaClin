@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">DaClin</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">e404</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <section id="error">
+    <ion-text color="primary">
+      <h1 class="texto-animado">Esta pagina no existe :C</h1>
+    </ion-text>
+
+    <div id="animated-group">
+    <ion-img src="assets/images/e404.svg"></ion-img>
+
+    <ion-button routerLink="/" color="primary">
+      <ion-icon slot="start" name="home-outline"></ion-icon>
+      <ion-label>Ir al inicio</ion-label>
+    </ion-button>
+    </div>
+  </section>
+
+</ion-content>
