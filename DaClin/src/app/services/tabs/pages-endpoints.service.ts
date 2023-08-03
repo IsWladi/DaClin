@@ -1,17 +1,38 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import { AuthService } from '../autenticacion//auth.service';
+import { AuthService } from '../autenticacion/auth.service';
 import { map } from 'rxjs/operators';
 import { Cita } from '../../model/citas';
 import { Remedio } from 'src/app/model/remedios';
 import { Examen } from 'src/app/model/examenes';
+import { Router } from '@angular/router';
+// import environment
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PagesEndpointsService {
+  examenes: any = []; // Array de examenes actuales del usuario, se maneja desde la vista
+  remedios: any = []; // Array de remedios actuales del usuario, se maneja desde la vista
+  citas: any = []; // Array de citas actuales del usuario, se maneja desde la vista
 
-  constructor(private http: HttpClient, private auth:AuthService) { }
+  constructor(private http: HttpClient, public auth:AuthService, private router:Router) { }
+
+  closeSesion(testing: boolean = false){
+    this.auth.userId = ""
+    localStorage.removeItem('userId');
+    this.resetData();
+    if (!testing) {
+      this.router.navigate(['/login']);
+    }
+  }
+
+  resetData() {
+    this.examenes = [];
+    this.remedios = [];
+    this.citas = [];
+  }
 
   async crearExamen(examenData: any) {
     let response:any = {};
@@ -60,6 +81,7 @@ export class PagesEndpointsService {
             imagen: item.imagen
           };
         });
+        this.examenes = examenes;
         return examenes;
       }
       return 0;
@@ -115,6 +137,7 @@ export class PagesEndpointsService {
             motivo: item.motivo
           };
         });
+        this.citas = citas;
         return citas;
       }
       return 0;
@@ -179,6 +202,7 @@ export class PagesEndpointsService {
           fecha: item.fecha
         };
       });
+      this.remedios = remedios;
       return remedios;
     } catch (error) {
       console.error('Error al obtener remedios:', error);

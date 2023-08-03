@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+  },  {
+    path: '**',
+    loadChildren: () => import('./e404/e404.module').then( m => m.E404PageModule)
   },
+
 ];
 @NgModule({
   imports: [

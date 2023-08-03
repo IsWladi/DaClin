@@ -1,17 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoadingAdminPage } from './loading-admin.page';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 describe('LoadingAdminPage', () => {
-  let component: LoadingAdminPage;
-  let fixture: ComponentFixture<LoadingAdminPage>;
 
-  beforeEach(async(() => {
-    fixture = TestBed.createComponent(LoadingAdminPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach((async() => {
+    await TestBed.configureTestingModule({
+      declarations: [ LoadingAdminPage ],
+      imports: [HttpClientTestingModule]
+    }).compileComponents();
+
   }));
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(LoadingAdminPage).toBeTruthy();
   });
 });

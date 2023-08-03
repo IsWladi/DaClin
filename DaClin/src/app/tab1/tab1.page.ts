@@ -9,6 +9,6 @@ import { AuthService } from '../services/autenticacion/auth.service';
 })
 export class Tab1Page {
 
-  constructor(public auth:AuthService) {}
+  constructor(public apiService:PagesEndpointsService, private auth:AuthService) {}
 
 }

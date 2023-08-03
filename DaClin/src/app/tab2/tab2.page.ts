@@ -31,7 +31,7 @@ export class Tab2Page{
   public alertButtons = ['OK'];
   showAlert = false; // Variable booleana para controlar la visibilidad de la alerta
 
-  constructor(public auth:AuthService,private apiService:PagesEndpointsService, public fb: FormBuilder, private alertController: AlertController) {
+  constructor(public auth:AuthService, public apiService:PagesEndpointsService, public fb: FormBuilder, private alertController: AlertController) {
       this.isExpanded = this.citas.map(() => false);
     this.formularioCita = this.fb.group({
       motivo: new FormControl('', [
@@ -139,6 +139,7 @@ export class Tab2Page{
      // hacer que las cards esten contraidas
      this.isExpanded = [];
      this.resetForm(); // ocultar formulario
+     this.citas = this.apiService.citas;
      this.apiService.getCitas()
      .then(citas => {
        this.citas = citas;

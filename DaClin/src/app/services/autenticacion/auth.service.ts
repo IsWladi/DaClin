@@ -73,12 +73,6 @@ async loginUsuario(usuario: string, contrasena: string, saveConnection: boolean)
   }
 }
 
-  closeSesion(){
-    this.userId = ""
-    localStorage.removeItem('userId');
-    this.router.navigate(['/login']);
-  }
-
   isLoggedIn(){
     if (this.userId == "" && localStorage.getItem('userId') == null ){
       return false
