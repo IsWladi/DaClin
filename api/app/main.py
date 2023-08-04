@@ -52,13 +52,12 @@ app.add_middleware(
 username = "admin"
 password = "myPassword123"
 # Crear una instancia del cliente de MongoDB
-# con mongo atlas
-mongo_client = MongoClient(
-    "mongodb+srv://daClinMongoRemote:bLvhEQt81pN52dnT@clusterdaclin.zqephrf.mongodb.net/?retryWrites=true&w=majority")
+mongo_client = MongoClient("mongodb://DaClin_bd:27017/",
+                           username=username,
+                           password=password)
 
 # Obtener una referencia a la base de datos
-# con atlas
-mongo_db = mongo_client["ClusterDaClin"]
+mongo_db = mongo_client["DaClin_bd"]
 
 usuarios_collection = mongo_db["usuarios"]
 

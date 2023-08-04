@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   userId: any = ""; // para acceder desde cualquier page al id del usuario logeado y usarlo para endpoints
-  endPointBase = "https://daclinapi-1-f4557501.deta.app/"
+  endPointBase = "http://localhost:8000/"
 
   constructor(private http: HttpClient, private router:Router) { }
   //obtener username
