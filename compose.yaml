@@ -1,0 +1,47 @@
+services:
+  ionic:
+    container_name: web_ionic_DaClin
+    build: .
+    command: >
+      sh -c "cd ./DaClin &&
+      ionic serve --host=0.0.0.0 --port=8100"
+    volumes:
+      - .:/code/DaClin
+    ports:
+      - "8100:8100"
+    working_dir: /code/DaClin
+    networks:
+      - DaClin_net
+
+  db:
+    image: mongo:5.0
+    container_name: DaClin_bd
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=myPassword123
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_DaClin:/data/db
+      - mongodb_config_DaClin:/data/configdb
+    depends_on:
+      - ionic
+    networks:
+      - DaClin_net
+  api:
+    container_name: DaClin_api
+    build: ./api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 80
+    volumes:
+      - ./api:/code/
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    networks:
+      - DaClin_net
+networks:
+  DaClin_net:
+volumes:
+  mongodb_DaClin:
+  mongodb_config_DaClin:
