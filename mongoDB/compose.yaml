@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mongo:5.0
+    container_name: DaClin_bd
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=myPassword123
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_DaClin:/data/db
+      - mongodb_config_DaClin:/data/configdb
+    depends_on:
+      - ionic
+    networks:
+      - DaClin_net
